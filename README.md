@@ -7,4 +7,5 @@ A repository is essentially something that contains all data, code, and informat
 
 
 ## General Rule of Thumb
-### Only programming team executives inside the Club would by default have write access to this, and generally you should create a pull request to allow executives to review the code written and push them for you. This is to prevent untested or bad code to be pushed into the main repository, which would be used on the robot during competition.
+
+**Only programming team executives inside the Club would by default have write access to this, and generally you should create a pull request to allow executives to review the code written and push them for you. This is to prevent untested or bad code to be pushed into the main repository, which would be used on the robot during competition.**
