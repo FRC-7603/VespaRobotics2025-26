@@ -13,7 +13,7 @@ This repository is dedicated to the VESPA Robotics Team for the **2025–2026 FR
 
 ## 🛠 Tech & Tools
 - **FRC WPILib!**
-- PathPlanner
+- PathPlanner and PhotonVision
 - GitHub for version control & organization
 
 ---
