@@ -1,7 +1,7 @@
 # VespaRobotics 2025/2026 main repo
 
 Welcome to the **VespaRobotics 2025/26 Season Repository**!  
-This repo is dedicated to the code for the robotic system that is used for the **2025 - 2026 FRC season**.  
+This repository is dedicated to the VESPA Robotics Team for the **2025–2026 FRC season.**
 
 ---
 
