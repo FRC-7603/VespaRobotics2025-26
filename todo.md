@@ -1,3 +1,3 @@
-- [ ]BUILD THE ROBOT
+- [ ] BUILD THE ROBOT
 - [ ] fix the vision system
 - [ ] plan a path for auto (+ code it)
