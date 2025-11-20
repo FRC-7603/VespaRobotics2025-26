@@ -2,6 +2,7 @@
 
 Welcome to the **VespaRobotics 2025/26 Season Repository**!  
 This repository is dedicated to the VESPA Robotics Team for the **2025–2026 FRC season.**
+**THIS REPOSITORY IS FOR THE GIT TUTORIAL ONLY**
 
 ---
 
