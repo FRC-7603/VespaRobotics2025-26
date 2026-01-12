@@ -6,37 +6,31 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RevMotor;
 
-public class Shooter implements Subsystem {
-
-    public static Shooter singleInst;
-    public static Shooter getInst(){
-        if (singleInst == null) singleInst = new Shooter();
+public class Intake implements Subsystem{
+    public static Intake singleInst;
+    public static Intake getInst(){
+        if (singleInst == null) singleInst = new Intake();
         return singleInst;
     }
 
-    RevMotor fuelMotor;
+    RevMotor fuelMotorTWO;
 
     double fuelInSpeed = 0.4;
     double fuelOutSpeed =-0.4;
 
-    public Shooter(){
-        // set the deviceID for Rev 
-        fuelMotor = new RevMotor(4, MotorType.kBrushed);
+    public Intake(){
+        
+        fuelMotorTWO = new RevMotor(4, MotorType.kBrushless);
     }
     
     public void FuelIn(){
-        fuelMotor.Motor.set(fuelInSpeed);
+        fuelMotorTWO.Motor.set(fuelInSpeed);
     }
     public void FuelOut(){
-        fuelMotor.Motor.set(fuelOutSpeed);
+        fuelMotorTWO.Motor.set(fuelOutSpeed);
     }
     public void Stop(){
-        fuelMotor.Motor.set(0);;
-    }
-    
-    @Override
-    public void periodic(){
-        //fuelMotor.resetReference();
+        fuelMotorTWO.Motor.set(0);;
     }
     
     public Command FuelInCommand(){

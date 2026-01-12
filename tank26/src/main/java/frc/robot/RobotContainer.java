@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Intake;
 
 // import com.ctre.phoenix.motorcontrol.ControlMode;
 // import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -35,6 +36,7 @@ public class RobotContainer {
 
   public final Shooter shooter = new Shooter();
   public final Climber climber = new Climber();
+  public final Intake intake = new Intake();
 
 
   public RobotContainer() {
