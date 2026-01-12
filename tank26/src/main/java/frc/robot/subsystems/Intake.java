@@ -20,7 +20,7 @@ public class Intake implements Subsystem{
 
     public Intake(){
         
-        fuelMotorTWO = new RevMotor(4, MotorType.kBrushless);
+        fuelMotorTWO = new RevMotor(4, MotorType.kBrushed); // set the deviceID for Rev 
     }
     
     public void FuelIn(){
