@@ -6,8 +6,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 // import com.pathplanner.lib.commands.PathPlannerAuto;
 // import com.pathplanner.lib.auto.NamedCommands;
@@ -18,25 +21,19 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static frc.robot.Constants.OperatorConstants.*;
 
+//DS
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
-
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 //Subsystems
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.CANDriveSubsystem;
+import frc.robot.subsystems.CANFuelSubsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
-
-
 
 public class RobotContainer {
 
@@ -47,45 +44,48 @@ public class RobotContainer {
   public final Climber climber = new Climber();
   public final Intake intake = new Intake();
   public final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
+  public final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
 
   // // The operator's controller
   // private final CommandXboxController operatorController = new CommandXboxController(
   //     OPERATOR_CONTROLLER_PORT);
 
   // The operator's controller
-  private final Joystick operatorController = new Joystick(
-    OPERATOR_CONTROLLER_PORT);
+  private final Joystick operatorController = new Joystick(OPERATOR_CONTROLLER_PORT);
 
-    public RobotContainer() {
-      NamedCommands.registerCommand("FuelIN", shooter.FuelInCommand());
-    
-      configureBindings();
-      configureDefaultCommands();
-      }
-    
-    private void configureBindings() {
-    
-      // Buttons (change numbers if needed)
-      JoystickButton leftButton  = new JoystickButton(stick, 5);
-      JoystickButton rightButton = new JoystickButton(stick, 6);
-    
-      leftButton.onTrue(shooter.FuelInCommand());
-      rightButton.onTrue(shooter.FuelOutCommand());
+  public RobotContainer() {
+    NamedCommands.registerCommand("FuelIN", shooter.FuelInCommand());
+    NamedCommands.registerCommand("FuelOUT", intake.FuelInCommand());
+    //NamedCommands.registerCommand("Climber", climber.());
+    //NamedCommands.registerCommand("setIntakeLauncherRoller", fuelSubsystem.setIntakeLauncherRoller(60));
+  
+    configureBindings();
+    configureDefaultCommands();
     }
-    
-    private void configureDefaultCommands() {
-    
-      // Arcade drive using joystick
-      driveSubsystem.setDefaultCommand(
-        Commands.run(
-          () -> driveSubsystem.driveArcade(
-            -stick.getY(), // forward/back
-            stick.getX()   // turn
-          ),
-        driveSubsystem
-        )
-      );
-    }
+  
+  private void configureBindings() {
+  
+    // Buttons (change numbers if needed) LINE 67
+    JoystickButton leftButton  = new JoystickButton(stick, 5);
+    JoystickButton rightButton = new JoystickButton(stick, 6);
+  
+    leftButton.onTrue(shooter.FuelInCommand());
+    rightButton.onTrue(shooter.FuelOutCommand());
+  }
+  
+  private void configureDefaultCommands() {
+  
+    // Arcade drive using joystick
+    driveSubsystem.setDefaultCommand(
+      Commands.run(
+        () -> driveSubsystem.driveArcade(
+          -stick.getY(), // forward/back
+          stick.getX()   // turn
+        ),
+      driveSubsystem
+      )
+    );
+  }
 
   public Command getAutonomousCommand() {
 

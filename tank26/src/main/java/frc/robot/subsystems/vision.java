@@ -17,7 +17,7 @@ public class vision extends SubsystemBase {
         var result = camera.getLatestResult();
         if (result.hasTargets()) {
             PhotonTrackedTarget target = result.getBestTarget();
-            return target.getYaw(); // degrees, +right / -left
+            return target.getYaw(); // degrees, -left / +right
         }
         return 0.0;
     }

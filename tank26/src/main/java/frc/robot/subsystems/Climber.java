@@ -30,25 +30,25 @@ public class Climber implements Subsystem {
         fuelMotorTWO = new RevMotor(4, MotorType.kBrushless); // idk if brushless
     }
     
-    public void FuelIn(){
+    public void ClimberSpeedUp(){
         fuelMotorTWO.Motor.set(ClimberSpeedUp);
     }
-    public void FuelOut(){
+    public void ClimberSpeedDown(){
         fuelMotorTWO.Motor.set(ClimberSpeedDown);
     }
     public void Stop(){
         fuelMotorTWO.Motor.set(0);;
     }
     
-    public Command FuelInCommand(){
+    public Command ClimberSpeedDownCommand(){
         return run(()->{
             System.out.println("Fuel In");
-            FuelIn();
+            ClimberSpeedDown();
         });
     }
     
-    public Command FuelOutCommand(){
-        return run(this::FuelOut);
+    public Command ClimberSpeedUpCommand(){
+        return run(this::ClimberSpeedUp);
     }
     
     public Command FuelStopCommand(){
