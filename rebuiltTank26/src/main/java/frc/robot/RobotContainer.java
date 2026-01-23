@@ -7,19 +7,18 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
-// import com.pathplanner.lib.commands.PathPlannerAuto;
-// import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static frc.robot.Constants.OperatorConstants.*;
+import static frc.robot.Constants.ControllerConstants;
 
 //DS
 import edu.wpi.first.wpilibj.DriverStation;
@@ -32,10 +31,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
-import frc.robot.subsystems.AutoLockAprilTag;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+//import frc.robot.subsystems.AutoLockAprilTag;
 
 public class RobotContainer {
 
@@ -48,7 +44,7 @@ public class RobotContainer {
   public final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   public final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
   public final VisionSubsystem visionSubsystem = new VisionSubsystem();
-  public final AutoLockAprilTag autoLockSubsystem = new AutoLockAprilTag(driveSubsystem, visionSubsystem);
+  //public final AutoLockAprilTag autoLockSubsystem = new AutoLockAprilTag(driveSubsystem, visionSubsystem);
 
   // // The operator's controller
   // private final CommandXboxController operatorController = new CommandXboxController(
@@ -62,19 +58,22 @@ public class RobotContainer {
     NamedCommands.registerCommand("ClimbUP", climber.ClimberSpeedUpCommand());
     NamedCommands.registerCommand("ClimbDown", climber.ClimberSpeedDownCommand());
     NamedCommands.registerCommand("FuelIn", intake.FuelInCommand());
-    NamedCommands.registerCommand("fuelsystem", getAutonomousCommand());
+    //NamedCommands.registerCommand("fuelsystem", getAutonomousCommand());
     //NamedCommands.registerCommand("setIntakeLauncherRoller", fuelSubsystem.setIntakeLauncherRoller(60));
   
     configureBindings();
     configureDefaultCommands();
     }
-  //LINE 67
+  
+//LINE 67
+
   private void configureBindings() {
   
     // Buttons (change numbers if needed)
-    JoystickButton leftButton  = new JoystickButton(stick, 5);
-    JoystickButton rightButton = new JoystickButton(stick, 6);
-    JoystickButton autoLockButton = new JoystickButton(stick, 7);
+    JoystickButton leftButton  = new JoystickButton(stick, ControllerConstants.INTAKE);
+    JoystickButton rightButton = new JoystickButton(stick, ControllerConstants.SHOOTER);
+    JoystickButton DynamicOutTake = new JoystickButton(stick, ControllerConstants.DynamicOutTake);
+    //JoystickButton autoLockButton = new JoystickButton(stick, 7);
   
     //this is for Xbox (THIS IS FOR BY TWICE!?!)
     leftButton.onTrue(shooter.FuelInCommand());

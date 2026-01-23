@@ -17,6 +17,26 @@ public final class Constants {
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
   }
 
+  public static final class ControllerConstants {
+    //INTAKE = L2 or LT
+    public static final int INTAKE = 5;
+    //OUTTAKE = R2 or RT
+    public static final int SHOOTER = 6;
+    //DynamicOutTake = R2 or RT
+    public static final int DynamicOutTake = 67;
+    //AUTOLOCK = LEFTARROW
+    public static final int AUTOLOCK = 6;
+    //GroundOUTTAKE = down arrow key
+    public static final int GroundOUTTAKE = 7;
+    //INFRONT SHOOTER HUB = A 
+    public static final int HUBSHOOTER = 1;
+    //CLIMB UP = Y
+    public static final int UP = 1;
+    //CLIMB DOWN = X
+    public static final int DOWN = 1;
+  }
+
+
   public static final class FuelConstants {
     // Motor controller IDs for Fuel Mechanism motors
     public static final int FEEDER_MOTOR_ID = 6;

@@ -27,7 +27,7 @@ public class Climber implements Subsystem {
 
     public Climber(){
         // set the deviceID for Rev 
-        fuelMotorTWO = new RevMotor(4, MotorType.kBrushless); // idk if brushless
+        fuelMotorTWO = new RevMotor(4, MotorType.kBrushless); // idk if brushless yet
     }
     
     public void ClimberSpeedUp(){

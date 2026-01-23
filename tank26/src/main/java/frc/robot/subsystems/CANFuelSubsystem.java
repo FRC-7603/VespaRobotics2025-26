@@ -16,6 +16,9 @@ public class CANFuelSubsystem implements Subsystem{
 
     public CANFuelSubsystem() {
 
+        double fuelInSpeed = 0.4;
+        double fuelOutSpeed =-0.4;
+
         intakeLauncherRoller = new SparkMax(INTAKE_LAUNCHER_MOTOR_ID, MotorType.kBrushed);
         feederRoller = new SparkMax(FEEDER_MOTOR_ID, MotorType.kBrushed);
 
