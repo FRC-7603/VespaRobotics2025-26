@@ -5,6 +5,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RevMotor;
+import static frc.robot.Constants.FuelConstants;
 
 public class Shooter implements Subsystem {
 
@@ -21,7 +22,7 @@ public class Shooter implements Subsystem {
 
     public Shooter(){
         // set the deviceID for Rev 
-        fuelMotor = new RevMotor(4, MotorType.kBrushed);
+        fuelMotor = new RevMotor(FuelConstants.INTAKE_LAUNCHER_MOTOR_ID, MotorType.kBrushed);
     }
     
     public void FuelIn(){

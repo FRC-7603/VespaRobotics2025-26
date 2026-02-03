@@ -54,6 +54,7 @@ public class RobotContainer {
   private final Joystick operatorController = new Joystick(OPERATOR_CONTROLLER_PORT);
 
   public RobotContainer() {
+    // THIS IS FOR (By twice) PathPlanner but idk if we can use pathplanner cuz to encoders
     NamedCommands.registerCommand("Shoot", shooter.FuelInCommand());
     NamedCommands.registerCommand("ClimbUP", climber.ClimberSpeedUpCommand());
     NamedCommands.registerCommand("ClimbDown", climber.ClimberSpeedDownCommand());

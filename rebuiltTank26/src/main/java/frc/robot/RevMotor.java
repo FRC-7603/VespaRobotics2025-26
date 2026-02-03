@@ -86,7 +86,6 @@ public class RevMotor {
                 // .pid(0.0, 0.0, 0.0);
             Motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         }
-        
     }
     
     /**

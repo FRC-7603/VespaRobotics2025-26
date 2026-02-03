@@ -8,6 +8,8 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import static frc.robot.Constants.ClimberMotorsID;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RevMotor;
@@ -27,7 +29,8 @@ public class Climber implements Subsystem {
 
     public Climber(){
         // set the deviceID for Rev 
-        fuelMotorTWO = new RevMotor(4, MotorType.kBrushless); // idk if brushless yet
+        fuelMotorTWO = new RevMotor(ClimberMotorsID.Climber_Motor_ID, MotorType.kBrushless); 
+        // idk if brushless yet
     }
     
     public void ClimberSpeedUp(){
