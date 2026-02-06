@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig;
 //import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -72,7 +73,7 @@ public class RevMotor {
         Motor = motor;
         CLController = Motor.getClosedLoopController();
         
-        CLController.setReference(refVal, controlT);
+        //CLController.setReference(refVal, controlT);
         if(!IsAlreadyConfigured){
             SparkMaxConfig config = new SparkMaxConfig();
             config
@@ -85,6 +86,11 @@ public class RevMotor {
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
                 // .pid(0.0, 0.0, 0.0);
             Motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+            // Motor.configureAsync(
+            //     config,
+            //     ResetMode.kResetSafe,
+            //     PersistMode.kPersist
+            // );
         }
     }
     
@@ -128,7 +134,8 @@ public class RevMotor {
      * @return The {@code REVLibError} normaly returned by {@link SparkClosedLoopController#setReference(double, ControlType)}
       */
     protected REVLibError defaultSetRef(){
-        return CLController.setReference(refVal, controlT);
+        //return CLController.setReference(refVal, controlT);
+        return setRefernce(refVal, controlT);
     }
     
     /**
@@ -142,7 +149,8 @@ public class RevMotor {
      * @return The {@code REVLibError} normaly returned by {@link SparkClosedLoopController#setReference(double, ControlType)}
       */
     public REVLibError setRefernce(double value, ControlType type){
-        return CLController.setReference(value, type);
+        //return CLController.setReference(value, type);
+        return setRefernce(value, type);
     }
     
     /**
