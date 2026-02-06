@@ -10,8 +10,9 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.auto.NamedCommands;
+//idk if we can use pathplanner cuz no encoders
+//import com.pathplanner.lib.commands.PathPlannerAuto;
+//import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -29,13 +30,15 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
+// 
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
-//import frc.robot.subsystems.AutoLockAprilTag;
 
 public class RobotContainer {
 
   private final CommandXboxController joystickXBOX = new CommandXboxController(1);
+
+  // the only controller that is used right now
   private final Joystick stick = new Joystick(0);
 
   public final Shooter shooter = new Shooter();
@@ -44,7 +47,6 @@ public class RobotContainer {
   public final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   public final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
   public final VisionSubsystem visionSubsystem = new VisionSubsystem();
-  //public final AutoLockAprilTag autoLockSubsystem = new AutoLockAprilTag(driveSubsystem, visionSubsystem);
 
   // // The operator's controller
   // private final CommandXboxController operatorController = new CommandXboxController(
@@ -64,7 +66,7 @@ public class RobotContainer {
   
     configureBindings();
     configureDefaultCommands();
-    }
+  }
   
 //LINE 67
 
@@ -74,9 +76,7 @@ public class RobotContainer {
     JoystickButton leftButton  = new JoystickButton(stick, ControllerConstants.INTAKE);
     JoystickButton rightButton = new JoystickButton(stick, ControllerConstants.SHOOTER);
     JoystickButton DynamicOutTake = new JoystickButton(stick, ControllerConstants.DynamicOutTake);
-    //JoystickButton autoLockButton = new JoystickButton(stick, 7);
   
-    //this is for Xbox (THIS IS FOR BY TWICE!?!)
     leftButton.onTrue(shooter.FuelInCommand());
     rightButton.onTrue(shooter.FuelOutCommand());
 
@@ -111,6 +111,7 @@ public class RobotContainer {
     //     }
     // }
     // return new PathPlannerAuto("Far Left Auto");
+
     return null;
   }
 }
