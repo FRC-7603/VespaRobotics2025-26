@@ -21,7 +21,7 @@ public class Intake implements Subsystem{
 
     public Intake(){
         
-        fuelMotorTWO = new RevMotor(FuelConstants.INTAKE_LAUNCHER_MOTOR_ID, MotorType.kBrushed); 
+        fuelMotorTWO = new RevMotor(FuelConstants.FUEL_MOTOR_ID, MotorType.kBrushed); 
     }
     
     public void FuelIn(){

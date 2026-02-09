@@ -22,7 +22,7 @@ public class Shooter implements Subsystem {
 
     public Shooter(){
         // set the deviceID for Rev 
-        fuelMotor = new RevMotor(FuelConstants.INTAKE_LAUNCHER_MOTOR_ID, MotorType.kBrushed);
+        fuelMotor = new RevMotor(FuelConstants.SHOOTER_FUEL_MOTOR_ID, MotorType.kBrushed);
     }
     
     public void FuelIn(){

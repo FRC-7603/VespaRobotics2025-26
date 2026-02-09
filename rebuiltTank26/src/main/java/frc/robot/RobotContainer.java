@@ -7,23 +7,24 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+//import edu.wpi.first.wpilibj2.command.CommandScheduler;
+//import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 //idk if we can use pathplanner cuz no encoders
 //import com.pathplanner.lib.commands.PathPlannerAuto;
 //import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+//import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import static frc.robot.Constants.OperatorConstants.*;
-import static frc.robot.Constants.ControllerConstants;
+//import static frc.robot.Constants.OperatorConstants.*;
+//import static frc.robot.Constants.ControllerConstants;
+import static frc.robot.Constants.ControllerConstantsLetters.*;
 
 //DS
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+//import edu.wpi.first.wpilibj.DriverStation;
+//import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 //Subsystems
 import frc.robot.subsystems.Shooter;
@@ -31,13 +32,13 @@ import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.ControllerConstantsLetters;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 
 public class RobotContainer {
 
   private final CommandXboxController joystickXBOX = new CommandXboxController(1);
-
 
   // the only controller that is used right now
   private final Joystick stick = new Joystick(0);
@@ -57,7 +58,7 @@ public class RobotContainer {
   //     OPERATOR_CONTROLLER_PORT);
 
   // The operator's controller
-  private final Joystick operatorController = new Joystick(OPERATOR_CONTROLLER_PORT);
+//  private final Joystick operatorController = new Joystick(OPERATOR_CONTROLLER_PORT);
 
   public RobotContainer() {
     // THIS IS FOR (By twice) PathPlanner but idk if we can use pathplanner cuz to encoders
@@ -79,15 +80,18 @@ public class RobotContainer {
     // Buttons (change numbers if needed)
     JoystickButton leftButton  = new JoystickButton(stick, ControllerConstants.INTAKE);
     JoystickButton rightButton = new JoystickButton(stick, ControllerConstants.SHOOTER);
-    JoystickButton DynamicOutTake = new JoystickButton(stick, ControllerConstants.DynamicOutTake);
+//    JoystickButton DynamicOutTake = new JoystickButton(stick, ControllerConstants.DynamicOutTake);
     JoystickButton DownButton = new JoystickButton(stick, ControllerConstants.DOWN);
+    JoystickButton aButton = new JoystickButton(stick, ControllerConstantsLetters.A);
+    JoystickButton bButton = new JoystickButton(stick, ControllerConstantsLetters.B);
     //JoystickButton autoLockButton = new JoystickButton(stick, 7);
   
     //this is for Xbox (THIS IS FOR BY TWICE!?!)
     leftButton.onTrue(shooter.FuelInCommand());
     rightButton.onTrue(shooter.FuelOutCommand());
-    DownButton.onTrue(driveSubsystem.driveStopCommand());
-
+    DownButton.onTrue(driveSubsystem.driveForwardCommand());
+    aButton.onTrue(driveSubsystem.driveForwardCommand());
+    bButton.onTrue(driveSubsystem.driveStopCommand());
     // Hold button to activate auto-lock
     //autoLockButton.onTrue
     //autoLockButton.onFalse
