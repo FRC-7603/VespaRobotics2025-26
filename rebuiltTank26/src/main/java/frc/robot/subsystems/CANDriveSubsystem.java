@@ -72,12 +72,10 @@ public class CANDriveSubsystem extends SubsystemBase {
   public void periodic() {
   }
 
+
+  // Methods
   public void driveArcade(double xSpeed, double zRotation) {
     drive.arcadeDrive(xSpeed, zRotation);
-  }
-
-  public void driveForward() {
-    driveArcade(1,0);
   }
 
   public void stop() {
@@ -88,11 +86,14 @@ public class CANDriveSubsystem extends SubsystemBase {
     drive.tankDrive(left, right);
   }
 
+  // Commands
   public Command driveStopCommand() {
     return run(this::stop);
   }
 
   public Command driveForwardCommand() {
-    return run(this::driveForward);
+    return run(() ->
+      driveArcade(1,0)
+    );
   }
 }
