@@ -58,6 +58,7 @@ public final class Constants {
       public static final int start = 8;
       public static final int leftJoystickPress = 9;
       public static final int rightJoystickPress = 10;
+      //The names of the buttons on the controller
   }
 
 
