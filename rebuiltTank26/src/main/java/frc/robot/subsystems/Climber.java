@@ -39,7 +39,7 @@ public class Climber implements Subsystem {
     public void Stop(){
         fuelMotorTWO.Motor.set(0);;
     }
-    
+    //Set of Commands used for the CLimber System
     public Command ClimberSpeedDownCommand(){
         return run(()->{
             System.out.println("Fuel In");
