@@ -53,5 +53,13 @@ public class Shooter implements Subsystem {
     
     public Command FuelStopCommand(){
         return run(this::Stop);
+    }   
+
+    public Command fireProjectileCommand(double wheelCircumfrenceINCHES,double yaw, double range){
+        double gravity = 9.81;
+        double targetVelocity = Math.sqrt((range*gravity)/Math.sin(2*yaw));
+        double targetRPM = (targetVelocity*60*12)/wheelCircumfrenceINCHES;
+        return run(() -> {fuelMotor.setSpeed(targetRPM);});
     }
+    
 }
