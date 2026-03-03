@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -55,11 +56,16 @@ public class Shooter implements Subsystem {
         return run(this::Stop);
     }   
 
-    public Command fireProjectileCommand(double wheelCircumfrenceINCHES,double yaw, double range){
+    public Command fireProjectileCommand(double yaw, double range){
         double gravity = 9.81;
+        double wheelCircumfrenceINCHES = 4.724409;
         double targetVelocity = Math.sqrt((range*gravity)/Math.sin(2*yaw));
         double targetRPM = (targetVelocity*60*12)/wheelCircumfrenceINCHES;
-        return run(() -> {fuelMotor.setSpeed(targetRPM);});
+        double targetRPMAfterGearRatio = targetRPM/1.04;
+
+        return run(() -> {
+            fuelMotor.setRefernce(targetRPMAfterGearRatio, ControlType.kVelocity);
+        });
     }
     
 }
