@@ -14,7 +14,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 // import com.pathplanner.lib.commands.PathPlannerAuto;
 // import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+// import edu.wpi.first.wpilibj2.command.button.Trigger;
 // import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -31,7 +31,6 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.Constants.ControllerConstantsLetters;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.FuelSubsystem;
 
 public class RobotContainer {
   // the only controller that is used right now
@@ -40,7 +39,6 @@ public class RobotContainer {
   public final Climber m_climber = new Climber();
   public final Intake m_intake = new Intake();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-  public final FuelSubsystem m_fuelSubsystem = new FuelSubsystem();
   public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
 
   // Reserved for future reference if AprilTags would work
@@ -74,18 +72,18 @@ public class RobotContainer {
     // Buttons (change numbers if needed)
     // JoystickButton DynamicOutTake = new JoystickButton(stick, ControllerConstants.DynamicOutTake);
 
-    JoystickButton aButton = new JoystickButton(stick, ControllerConstantsLetters.A);
+    // JoystickButton aButton = new JoystickButton(stick, ControllerConstantsLetters.A);
     JoystickButton bButton = new JoystickButton(stick, ControllerConstantsLetters.B);
-    JoystickButton xButton = new JoystickButton(stick, ControllerConstantsLetters.A);
-    JoystickButton yButton = new JoystickButton(stick, ControllerConstantsLetters.B);
+    // JoystickButton xButton = new JoystickButton(stick, ControllerConstantsLetters.A);
+    // JoystickButton yButton = new JoystickButton(stick, ControllerConstantsLetters.B);
     JoystickButton lbButton = new JoystickButton(stick, ControllerConstantsLetters.LB);
     JoystickButton rbButton = new JoystickButton(stick, ControllerConstantsLetters.RB);
-    JoystickButton backButton = new JoystickButton(stick, ControllerConstantsLetters.back);
-    JoystickButton startButton = new JoystickButton(stick, ControllerConstantsLetters.start);
-    JoystickButton leftJoystickButton = new JoystickButton(stick, ControllerConstantsLetters.leftJoystickPress);
-    JoystickButton rightJoystickButton = new JoystickButton(stick, ControllerConstantsLetters.rightJoystickPress);
+    // JoystickButton backButton = new JoystickButton(stick, ControllerConstantsLetters.back);
+    // JoystickButton startButton = new JoystickButton(stick, ControllerConstantsLetters.start);
+    // JoystickButton leftJoystickButton = new JoystickButton(stick, ControllerConstantsLetters.leftJoystickPress);
+    // JoystickButton rightJoystickButton = new JoystickButton(stick, ControllerConstantsLetters.rightJoystickPress);
 
-    //this is for Xbox (THIS IS FOR BY TWICE!?!)
+    //this is for Logitech (THIS IS FOR BY TWICE!?!)
     lbButton.onTrue(m_intake.intakeCommand());
     rbButton.onTrue(m_shooter.ShooterUnstickCommand());
     bButton.onTrue(m_driveSubsystem.driveStopCommand());
@@ -97,7 +95,7 @@ public class RobotContainer {
   
   private void configureDefaultCommands() {
   
-    // Arcade drive using joystick of Logitech
+    // Drivetrain Subsystem
     m_driveSubsystem.setDefaultCommand(
       Commands.run(
         () -> m_driveSubsystem.driveArcade(
@@ -108,18 +106,23 @@ public class RobotContainer {
       )
     );
 
+
+    // Climber Subsystem
     m_climber.setDefaultCommand(
       Commands.run(() -> m_climber.ClimberStopCommand(), m_climber)
     );
 
-    m_intake.setDefaultCommand(
-      Commands.run(() -> m_intake.stopCommand(), m_intake)
-    );
 
+    // Intake Subsystem (Currently not working)
+    // m_intake.setDefaultCommand(
+    //   Commands.run(() -> m_intake.stopCommand(), m_intake)
+    // );
+
+
+    // Shooter Subsystem
     m_shooter.setDefaultCommand(
       Commands.run(() -> m_shooter.ShooterStopCommand(), m_shooter)
     );
-
   }
 
   public Command getAutonomousCommand() {

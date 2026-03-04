@@ -14,24 +14,30 @@ public class Intake implements Subsystem {
         return singleInst;
     }
 
-    private final SparkMax m_fuelMotorTwo;
+    private final SparkMax m_intakeMotor;
+    private final SparkMax m_outtakeMotor;
 
 
     // constructor
     public Intake(){
-        m_fuelMotorTwo = new SparkMax(FuelConstants.FUEL_MOTOR_ID, MotorType.kBrushed); 
+        m_intakeMotor = new SparkMax(FuelConstants.INTAKE_MOTOR_ID, MotorType.kBrushed);
+        m_outtakeMotor = new SparkMax(FuelConstants.OUTTAKE_MOTOR_ID, MotorType.kBrushed); 
     }
 
-    
     // methods
+    public void setSpeed(double speed) {
+        m_intakeMotor.set(speed);
+        m_outtakeMotor.set(speed);
+    }
+
     public void intake(){
-        m_fuelMotorTwo.set(FuelConstants.fuelInSpeed);
+        setSpeed(FuelConstants.fuelInSpeed);
     }
     public void unstuck(){
-        m_fuelMotorTwo.set(FuelConstants.fuelOutSpeed);
+        setSpeed(FuelConstants.fuelOutSpeed);
     }
     public void Stop(){
-        m_fuelMotorTwo.set(0);
+        setSpeed(0);
     }
     
 
