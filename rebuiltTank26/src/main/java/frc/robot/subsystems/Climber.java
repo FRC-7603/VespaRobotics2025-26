@@ -33,7 +33,6 @@ public class Climber implements Subsystem {
     public void Stop(){
     m_climberMotor.set(0);
     }
-    
 
     // commands
     public Command ClimberSpeedDownCommand(){
