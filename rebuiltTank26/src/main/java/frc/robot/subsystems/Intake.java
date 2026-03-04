@@ -4,48 +4,53 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.RevMotor;
+import com.revrobotics.spark.SparkMax;
 import static frc.robot.Constants.FuelConstants;
 
-public class Intake implements Subsystem{
+public class Intake implements Subsystem {
     public static Intake singleInst;
     public static Intake getInst(){
         if (singleInst == null) singleInst = new Intake();
         return singleInst;
     }
 
-    RevMotor fuelMotorTWO;
+    private final SparkMax m_fuelMotorTwo;
 
-    double fuelInSpeed = 0.4;
-    double fuelOutSpeed =-0.4;
 
+    // constructor
     public Intake(){
-        
-        fuelMotorTWO = new RevMotor(FuelConstants.FUEL_MOTOR_ID, MotorType.kBrushed); 
+        m_fuelMotorTwo = new SparkMax(FuelConstants.FUEL_MOTOR_ID, MotorType.kBrushed); 
     }
+
     
-    public void FuelIn(){
-        fuelMotorTWO.Motor.set(fuelInSpeed);
+    // methods
+    public void intake(){
+        m_fuelMotorTwo.set(FuelConstants.fuelInSpeed);
     }
-    public void FuelOut(){
-        fuelMotorTWO.Motor.set(fuelOutSpeed);
+    public void unstuck(){
+        m_fuelMotorTwo.set(FuelConstants.fuelOutSpeed);
     }
     public void Stop(){
-        fuelMotorTWO.Motor.set(0);;
+        m_fuelMotorTwo.set(0);
     }
     
-    public Command FuelInCommand(){
-        return run(()->{
-            System.out.println("Fuel In");
-            FuelIn();
+
+    // commands
+    public Command intakeCommand(){
+        return run(() -> {
+            System.out.println("Intake Command Ran");
+            intake();
         });
     }
     
-    public Command FuelOutCommand(){
-        return run(this::FuelOut);
+    public Command groundOuttakeCommand(){
+        return run(() -> {
+            System.out.println("Outtake Command Ran");
+            unstuck();
+        });
     }
     
-    public Command FuelStopCommand(){
-        return run(this::Stop);
+    public Command stopCommand(){
+        return run(() -> Stop());
     }
 }

@@ -1,58 +1,57 @@
 package frc.robot.subsystems;
 
-//import com.revrobotics.spark.SparkMax;
-//import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-//import com.revrobotics.spark.config.SparkMaxConfig;
-//import com.revrobotics.spark.SparkBase.PersistMode;
-//import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import static frc.robot.Constants.ClimberMotorsID;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.RevMotor;
+import com.revrobotics.spark.SparkMax;
+import static frc.robot.Constants.ClimberConstants;
 
 public class Climber implements Subsystem {
-
     public static Climber singleInst;
     public static Climber getInst(){
         if (singleInst == null) singleInst = new Climber();
         return singleInst;
     }
 
-    double ClimberSpeedUp = 0.4;
-    double ClimberSpeedDown = -0.4;
+    private final SparkMax m_climberMotor;
 
-    RevMotor fuelMotorTWO;
 
+    // constructor
     public Climber(){
-        // set the deviceID for Rev 
-        fuelMotorTWO = new RevMotor(ClimberMotorsID.Climber_Motor_ID, MotorType.kBrushless); 
-        // idk if brushless yet
+        m_climberMotor = new SparkMax(ClimberConstants.ClimberMotorID, MotorType.kBrushless); 
     }
     
-    public void ClimberSpeedUp(){
-        fuelMotorTWO.Motor.set(ClimberSpeedUp);
+
+    // methods
+    public void speedUp(){
+        m_climberMotor.set(ClimberConstants.ClimberSpeedUp);
     }
-    public void ClimberSpeedDown(){
-        fuelMotorTWO.Motor.set(ClimberSpeedDown);
+    public void speedDown(){
+        m_climberMotor.set(ClimberConstants.ClimberSpeedDown);
     }
     public void Stop(){
-        fuelMotorTWO.Motor.set(0);;
+    m_climberMotor.set(0);
     }
     
+
+    // commands
     public Command ClimberSpeedDownCommand(){
-        return run(()->{
-            System.out.println("Fuel In");
-            ClimberSpeedDown();
+        return run(() -> {
+            System.out.println("Climber In");
+            speedDown();
         });
     }
     
     public Command ClimberSpeedUpCommand(){
-        return run(this::ClimberSpeedUp);
+        return run(() -> {
+            System.out.println("Climber Out");
+            speedUp();
+        });
     }
     
-    public Command FuelStopCommand(){
-        return run(this::Stop);
+    public Command ClimberStopCommand(){
+        return run(() -> Stop());
     }
 }
 

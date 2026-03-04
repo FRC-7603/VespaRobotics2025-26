@@ -7,91 +7,89 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import com.pathplanner.lib.auto.NamedCommands;
-//import edu.wpi.first.wpilibj2.command.CommandScheduler;
-//import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+// import edu.wpi.first.wpilibj2.command.CommandScheduler;
+// import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 //idk if we can use pathplanner cuz no encoders
-//import com.pathplanner.lib.commands.PathPlannerAuto;
-//import com.pathplanner.lib.auto.NamedCommands;
+// import com.pathplanner.lib.commands.PathPlannerAuto;
+// import com.pathplanner.lib.auto.NamedCommands;
 
-//import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+// import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-//import static frc.robot.Constants.OperatorConstants.*;
-//import static frc.robot.Constants.ControllerConstants;
-import static frc.robot.Constants.ControllerConstantsLetters.*;
+// import static frc.robot.Constants.OperatorConstants.*;
 
-//DS
-//import edu.wpi.first.wpilibj.DriverStation;
-//import edu.wpi.first.wpilibj.DriverStation.Alliance;
+// DS
+// import edu.wpi.first.wpilibj.DriverStation;
+// import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-//Subsystems
+// Subsystems
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
-import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ControllerConstantsLetters;
-import frc.robot.subsystems.CANDriveSubsystem;
-import frc.robot.subsystems.CANFuelSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FuelSubsystem;
 
 public class RobotContainer {
-
-  private final CommandXboxController joystickXBOX = new CommandXboxController(1);
-
   // the only controller that is used right now
-  private final Joystick stick = new Joystick(0);
-
-  public final Shooter shooter = new Shooter();
-  public final Climber climber = new Climber();
-  public final Intake intake = new Intake();
-  public final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
-  public final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
-  public final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  public final Joystick stick = new Joystick(0);
+  public final Shooter m_shooter = new Shooter();
+  public final Climber m_climber = new Climber();
+  public final Intake m_intake = new Intake();
+  public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+  public final FuelSubsystem m_fuelSubsystem = new FuelSubsystem();
+  public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
 
   // Reserved for future reference if AprilTags would work
-  //public final AutoLockAprilTag autoLockSubsystem = new AutoLockAprilTag(driveSubsystem, visionSubsystem);
+  // public final AutoLockAprilTag autoLockSubsystem = new AutoLockAprilTag(driveSubsystem, visionSubsystem);
 
-  // // The operator's controller
+  // The operator's controller
   // private final CommandXboxController operatorController = new CommandXboxController(
   //     OPERATOR_CONTROLLER_PORT);
 
   // The operator's controller
-//  private final Joystick operatorController = new Joystick(OPERATOR_CONTROLLER_PORT);
+  // private final Joystick operatorController = new Joystick(OPERATOR_CONTROLLER_PORT);
 
+  // constructor
   public RobotContainer() {
-    // THIS IS FOR (By twice) PathPlanner but idk if we can use pathplanner cuz to encoders
-    NamedCommands.registerCommand("Shoot", shooter.FuelInCommand());
-    NamedCommands.registerCommand("ClimbUP", climber.ClimberSpeedUpCommand());
-    NamedCommands.registerCommand("ClimbDown", climber.ClimberSpeedDownCommand());
-    NamedCommands.registerCommand("FuelIn", intake.FuelInCommand());
+    // THIS IS FOR (By twice)
+    // Used for PathPlanner but idk if we can use pathplanner cuz to encoders
+    NamedCommands.registerCommand("Shoot", m_shooter.ShooterShootCommand());
+    NamedCommands.registerCommand("ClimbUp", m_climber.ClimberSpeedUpCommand());
+    NamedCommands.registerCommand("ClimbDown", m_climber.ClimberSpeedDownCommand());
+    NamedCommands.registerCommand("Intake", m_intake.intakeCommand());
     //NamedCommands.registerCommand("fuelsystem", getAutonomousCommand());
     //NamedCommands.registerCommand("setIntakeLauncherRoller", fuelSubsystem.setIntakeLauncherRoller(60));
   
     configureBindings();
     configureDefaultCommands();
     }
-  
-//LINE 67
+
 
   private void configureBindings() {
   
     // Buttons (change numbers if needed)
-    JoystickButton leftButton  = new JoystickButton(stick, ControllerConstants.INTAKE);
-    JoystickButton rightButton = new JoystickButton(stick, ControllerConstants.SHOOTER);
-//    JoystickButton DynamicOutTake = new JoystickButton(stick, ControllerConstants.DynamicOutTake);
-    JoystickButton DownButton = new JoystickButton(stick, ControllerConstants.DOWN);
+    // JoystickButton DynamicOutTake = new JoystickButton(stick, ControllerConstants.DynamicOutTake);
+
     JoystickButton aButton = new JoystickButton(stick, ControllerConstantsLetters.A);
     JoystickButton bButton = new JoystickButton(stick, ControllerConstantsLetters.B);
-    //JoystickButton autoLockButton = new JoystickButton(stick, 7);
-  
+    JoystickButton xButton = new JoystickButton(stick, ControllerConstantsLetters.A);
+    JoystickButton yButton = new JoystickButton(stick, ControllerConstantsLetters.B);
+    JoystickButton lbButton = new JoystickButton(stick, ControllerConstantsLetters.LB);
+    JoystickButton rbButton = new JoystickButton(stick, ControllerConstantsLetters.RB);
+    JoystickButton backButton = new JoystickButton(stick, ControllerConstantsLetters.back);
+    JoystickButton startButton = new JoystickButton(stick, ControllerConstantsLetters.start);
+    JoystickButton leftJoystickButton = new JoystickButton(stick, ControllerConstantsLetters.leftJoystickPress);
+    JoystickButton rightJoystickButton = new JoystickButton(stick, ControllerConstantsLetters.rightJoystickPress);
+
     //this is for Xbox (THIS IS FOR BY TWICE!?!)
-    leftButton.onTrue(shooter.FuelInCommand());
-    rightButton.onTrue(shooter.FuelOutCommand());
-    DownButton.onTrue(driveSubsystem.driveForwardCommand());
-    aButton.onTrue(driveSubsystem.driveForwardCommand());
-    bButton.onTrue(driveSubsystem.driveStopCommand());
+    lbButton.onTrue(m_intake.intakeCommand());
+    rbButton.onTrue(m_shooter.ShooterUnstickCommand());
+    bButton.onTrue(m_driveSubsystem.driveStopCommand());
+    
     // Hold button to activate auto-lock
     //autoLockButton.onTrue
     //autoLockButton.onFalse
@@ -99,16 +97,29 @@ public class RobotContainer {
   
   private void configureDefaultCommands() {
   
-    // Arcade drive using joystick
-    driveSubsystem.setDefaultCommand(
+    // Arcade drive using joystick of Logitech
+    m_driveSubsystem.setDefaultCommand(
       Commands.run(
-        () -> driveSubsystem.driveArcade(
-          -stick.getY(), // forward/back
-          stick.getX()   // turn
+        () -> m_driveSubsystem.driveArcade(
+          -stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis), // forward/back
+          stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis)   // turn
         ),
-      driveSubsystem
+        m_driveSubsystem
       )
     );
+
+    m_climber.setDefaultCommand(
+      Commands.run(() -> m_climber.ClimberStopCommand(), m_climber)
+    );
+
+    m_intake.setDefaultCommand(
+      Commands.run(() -> m_intake.stopCommand(), m_intake)
+    );
+
+    m_shooter.setDefaultCommand(
+      Commands.run(() -> m_shooter.ShooterStopCommand(), m_shooter)
+    );
+
   }
 
   public Command getAutonomousCommand() {
