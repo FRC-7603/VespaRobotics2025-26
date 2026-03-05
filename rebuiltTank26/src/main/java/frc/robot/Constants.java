@@ -19,7 +19,11 @@ public final class Constants {
   public static final class FuelConstants {
     // Motor controller IDs for Fuel Mechanism motors
     public static final int LEFT_MOTOR_ID = 5;
+    // Left motor is for both shooter fly wheel and intake rollers
     public static final int RIGHT_MOTOR_ID = 6;
+    //Right motor is for pushing ball in or out
+
+    //Note: the motors are on gear so be carfull of invering it 
 
     public static final int LAUNCHER_MOTOR_CURRENT_LIMIT = 60;
     public static final int FEEDER_MOTOR_CURRENT_LIMIT = 60;

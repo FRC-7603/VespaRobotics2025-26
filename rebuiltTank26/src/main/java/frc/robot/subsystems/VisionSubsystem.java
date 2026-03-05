@@ -7,6 +7,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
+import org.photonvision.PhotonUtils;
 
 public class VisionSubsystem extends SubsystemBase {
 
@@ -28,6 +29,23 @@ public class VisionSubsystem extends SubsystemBase {
     public double getYaw() {
         PhotonTrackedTarget target = getBestTarget();
         return (target == null) ? 0.0 : target.getYaw();
+    }
+
+    public double getDistance() {
+        PhotonTrackedTarget target = getBestTarget();
+        if (target == null) return 0.0;
+
+        double cameraHeight = 0.5; // meters (height of camera from floor)
+        double targetHeight = 1.5; // meters (height of tag/target center)
+        double cameraPitch = Math.toRadians(20); // camera tilt angle
+        double targetPitch = Math.toRadians(target.getPitch());
+
+        return PhotonUtils.calculateDistanceToTargetMeters(
+            cameraHeight,
+            targetHeight,
+            cameraPitch,
+            targetPitch
+        );
     }
 
     public Command holdDistance(DriveSubsystem drive) {
