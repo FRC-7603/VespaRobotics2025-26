@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
 
+import frc.robot.subsystems.DriveSubsystem;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -28,10 +30,35 @@ public class VisionSubsystem extends SubsystemBase {
         return (target == null) ? 0.0 : target.getYaw();
     }
 
+    public Command holdDistance(DriveSubsystem drive) {
+        return run(() -> {
+            if (!hasTarget()) {
+                drive.stop();
+                return;
+            }
+
+        PhotonTrackedTarget target = getBestTarget();
+
+        double yaw = target.getYaw();
+        double area = target.getArea();
+
+        // tuning constants
+        double turnKP = 0.02;
+        double forwardKP = 0.1;
+
+        double desiredDistance = 10; // target size when at desired distance
+
+        double turn = yaw * turnKP;
+        double forward = (desiredDistance - area) * forwardKP;
+
+        drive.driveArcade(forward, turn);
+        
+        });
+    }
 
     // Command to turn robot toward the target
 
-    public Command turnToTarget(CANDriveSubsystem drive) {
+    public Command turnToTarget(DriveSubsystem drive) {
         return run(() -> {
             if (!hasTarget()) {
                 drive.stop();
