@@ -10,47 +10,48 @@ import frc.robot.RevMotor;
 import static frc.robot.Constants.FuelConstants;
 
 public class Shooter implements Subsystem {
-
     public static Shooter singleInst;
     public static Shooter getInst(){
         if (singleInst == null) singleInst = new Shooter();
         return singleInst;
     }
 
-    RevMotor fuelMotor;
+    private final SparkMax m_fuelMotor;
 
-    double fuelInSpeed = 0.4;
-    double fuelOutSpeed =-0.4;
 
+    // constructor
     public Shooter(){
-        // set the deviceID for Rev 
-        fuelMotor = new RevMotor(FuelConstants.SHOOTER_FUEL_MOTOR_ID, MotorType.kBrushed);
+        m_fuelMotor = new SparkMax(ShooterConstants.SHOOTER_FUEL_MOTOR_ID, MotorType.kBrushed);
     }
     
-    public void FuelIn(){
-        fuelMotor.Motor.set(fuelInSpeed);
+
+    // methods
+    public void ShooterShoot(){
+        m_fuelMotor.set(ShooterConstants.shooterInSpeed);
     }
-    public void FuelOut(){
-        fuelMotor.Motor.set(fuelOutSpeed);
+
+    public void ShooterUnstick(){
+       m_fuelMotor.set(ShooterConstants.shooterOutSpeed);
     }
+
     public void Stop(){
-        fuelMotor.Motor.set(0);;
+        m_fuelMotor.set(0);
     }
-    
-    @Override
-    public void periodic(){
-        //fuelMotor.resetReference();
-    }
-    
-    public Command FuelInCommand(){
-        return run(()->{
+
+
+    // commands
+    public Command ShooterShootCommand(){
+        return run(() -> {
             System.out.println("Fuel In");
-            FuelIn();
+            ShooterShoot();
         });
     }
     
-    public Command FuelOutCommand(){
-        return run(this::FuelOut);
+    public Command ShooterUnstickCommand(){
+        return run(() -> {
+            System.out.println("Fuel Out");
+            ShooterUnstick();
+        });
     }
     
     public Command FuelStopCommand(){

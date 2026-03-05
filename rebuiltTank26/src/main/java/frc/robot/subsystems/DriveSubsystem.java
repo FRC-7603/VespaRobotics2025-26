@@ -13,11 +13,9 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
-import static frc.robot.Constants.*;
-import static frc.robot.Constants.MotorCurrentLimits.*;
 import static frc.robot.Constants.DriveConstants.*;
 
-public class CANDriveSubsystem extends SubsystemBase {
+public class DriveSubsystem extends SubsystemBase {
   private final SparkMax leftLeader;
   private final SparkMax leftFollower;
   private final SparkMax rightLeader;
@@ -25,7 +23,9 @@ public class CANDriveSubsystem extends SubsystemBase {
 
   private final DifferentialDrive drive;
 
-  public CANDriveSubsystem() {
+
+  // constructor
+  public DriveSubsystem() {
     // create brushed motors for drive
     leftLeader = new SparkMax(LEFT_LEADER_ID, MotorType.kBrushed);
     leftFollower = new SparkMax(LEFT_FOLLOWER_ID, MotorType.kBrushed);
@@ -74,7 +74,7 @@ public class CANDriveSubsystem extends SubsystemBase {
   }
 
 
-  // Methods
+  // methods
   public void driveArcade(double xSpeed, double zRotation) {
     drive.arcadeDrive(xSpeed, zRotation);
   }
@@ -87,14 +87,8 @@ public class CANDriveSubsystem extends SubsystemBase {
     drive.tankDrive(left, right);
   }
 
-  // Commands
+  // commands
   public Command driveStopCommand() {
-    return run(this::stop);
-  }
-
-  public Command driveForwardCommand() {
-    return run(() ->
-      driveArcade(1,0)
-    );
+    return run(() -> stop());
   }
 }

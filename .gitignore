@@ -21,3 +21,6 @@
 
 # Apple I hate you
 .DS_Store
+
+# VSCode
+/rebuiltTank26/.vscode
