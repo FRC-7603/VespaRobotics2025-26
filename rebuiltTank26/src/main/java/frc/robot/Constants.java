@@ -18,8 +18,8 @@ public final class Constants {
 
   public static final class FuelConstants {
     // Motor controller IDs for Fuel Mechanism motors
-    public static final int OUTTAKE_MOTOR_ID = 5;
-    public static final int INTAKE_MOTOR_ID = 6;
+    public static final int LEFT_MOTOR_ID = 5;
+    public static final int RIGHT_MOTOR_ID = 6;
 
     public static final int LAUNCHER_MOTOR_CURRENT_LIMIT = 60;
     public static final int FEEDER_MOTOR_CURRENT_LIMIT = 60;
@@ -39,7 +39,7 @@ public final class Constants {
   }
 
   public static final class ShooterConstants {
-    public static final int SHOOTER_FUEL_MOTOR_ID = 8;
+    public static final int SHOOTER_FUEL_MOTOR_ID = 7;
 
     public static final double shooterInSpeed = 0.4;
     public static final double shooterOutSpeed =-0.4;
