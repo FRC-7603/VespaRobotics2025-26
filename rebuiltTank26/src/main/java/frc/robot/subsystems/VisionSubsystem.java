@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Command;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -9,7 +11,7 @@ public class VisionSubsystem extends SubsystemBase {
     private final PhotonCamera camera;
 
     public VisionSubsystem() {
-        camera = new PhotonCamera("photonvision"); // camera name in Photon Vision
+        camera = new PhotonCamera("photonvision"); // must match PhotonVision UI name
     }
 
     public boolean hasTarget() {
@@ -23,7 +25,26 @@ public class VisionSubsystem extends SubsystemBase {
 
     public double getYaw() {
         PhotonTrackedTarget target = getBestTarget();
-        if (target == null) return 0.0;
-        return target.getYaw();
+        return (target == null) ? 0.0 : target.getYaw();
+    }
+
+
+    // Command to turn robot toward the target
+
+    public Command turnToTarget(CANDriveSubsystem drive) {
+        return run(() -> {
+            if (!hasTarget()) {
+                drive.stop();
+                return;
+            }
+
+            double yaw = getYaw();
+
+            // simple pid turn
+            double kP = 0.02;
+            double turn = yaw * kP;
+
+            drive.driveArcade(0, turn);
+        });
     }
 }
