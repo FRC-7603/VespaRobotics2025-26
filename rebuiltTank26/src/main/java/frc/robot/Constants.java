@@ -38,8 +38,8 @@ public final class Constants {
     public static final double SPIN_UP_FEEDER_VOLTAGE = -6;
     public static final double SPIN_UP_SECONDS = 1;
 
-    public static final double fuelInSpeed = 0.4;
-    public static final double fuelOutSpeed =-0.4;
+    public static final double fuelInSpeed = -0.4;
+    public static final double fuelOutSpeed =0.4;
   }
 
   public static final class ShooterConstants {
@@ -88,10 +88,10 @@ public final class Constants {
       public static final int leftJoystickPress = 9;
       public static final int rightJoystickPress = 10;
 
-      public static final int leftJoystickXAxis = 1;
-      public static final int leftJoystickYAxis = 0;
-      public static final int rightJoystickXAxis = 3;
-      public static final int rightJoystickYAxis = 2;
+      public static final int leftJoystickXAxis = 0;
+      public static final int leftJoystickYAxis = 1;
+      public static final int rightJoystickXAxis = 4;
+      public static final int rightJoystickYAxis = 5;
   }
 
   public static final class OperatorConstants {

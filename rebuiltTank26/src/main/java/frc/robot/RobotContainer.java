@@ -72,9 +72,9 @@ public class RobotContainer {
     // JoystickButton DynamicOutTake = new JoystickButton(stick, ControllerConstants.DynamicOutTake);
 
     // JoystickButton aButton = new JoystickButton(stick, ControllerConstantsLetters.A);
-    // JoystickButton bButton = new JoystickButton(stick, ControllerConstantsLetters.B);
-    JoystickButton xButton = new JoystickButton(stick, ControllerConstantsLetters.A);
-    // JoystickButton yButton = new JoystickButton(stick, ControllerConstantsLetters.B);
+    JoystickButton bButton = new JoystickButton(stick, ControllerConstantsLetters.B);
+    JoystickButton xButton = new JoystickButton(stick, ControllerConstantsLetters.X);
+    // JoystickButton yButton = new JoystickButton(stick, ControllerConstantsLetters.Y);
     JoystickButton lbButton = new JoystickButton(stick, ControllerConstantsLetters.LB);
     JoystickButton rbButton = new JoystickButton(stick, ControllerConstantsLetters.RB);
     // JoystickButton backButton = new JoystickButton(stick, ControllerConstantsLetters.back);
@@ -83,9 +83,9 @@ public class RobotContainer {
     // JoystickButton rightJoystickButton = new JoystickButton(stick, ControllerConstantsLetters.rightJoystickPress);
 
     //this is for Logitech (THIS IS FOR BY TWICE!?!)
-    lbButton.whileTrue(m_fuel.groundIntakeCommand());
-    rbButton.whileTrue(m_fuel.groundOuttakeCommand());
-    xButton.whileTrue(m_fuel.shootingCommand());
+    lbButton.onTrue(m_fuel.groundIntakeCommand());
+    rbButton.onTrue(m_fuel.groundOuttakeCommand());
+    xButton.onTrue(m_fuel.shootingCommand());
     lbButton.onFalse(m_fuel.stopCommand());
     rbButton.onFalse(m_fuel.stopCommand());
     xButton.onFalse(m_fuel.stopCommand());
@@ -101,8 +101,8 @@ public class RobotContainer {
     m_driveSubsystem.setDefaultCommand(
       Commands.run(
         () -> m_driveSubsystem.driveArcade(
-          -stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis), // forward/back
-          stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis)   // turn
+          -stick.getRawAxis(ControllerConstantsLetters.rightJoystickYAxis), // forward/back
+          stick.getRawAxis(ControllerConstantsLetters.leftJoystickXAxis)   // turn
         ),
         m_driveSubsystem
       )
