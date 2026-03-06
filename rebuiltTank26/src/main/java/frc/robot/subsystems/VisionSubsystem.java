@@ -12,6 +12,7 @@ import org.photonvision.PhotonUtils;
 public class VisionSubsystem extends SubsystemBase {
 
     private final PhotonCamera camera;
+    private final DriveSubsystem drive = new DriveSubsystem();
 
     public VisionSubsystem() {
         camera = new PhotonCamera("photonvision"); // must match PhotonVision UI name
