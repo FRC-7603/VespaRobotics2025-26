@@ -72,7 +72,7 @@ public class RobotContainer {
     // JoystickButton DynamicOutTake = new JoystickButton(stick, ControllerConstants.DynamicOutTake);
 
     // JoystickButton aButton = new JoystickButton(stick, ControllerConstantsLetters.A);
-    JoystickButton bButton = new JoystickButton(stick, ControllerConstantsLetters.B);
+    // JoystickButton bButton = new JoystickButton(stick, ControllerConstantsLetters.B);
     JoystickButton xButton = new JoystickButton(stick, ControllerConstantsLetters.A);
     // JoystickButton yButton = new JoystickButton(stick, ControllerConstantsLetters.B);
     JoystickButton lbButton = new JoystickButton(stick, ControllerConstantsLetters.LB);
@@ -86,10 +86,9 @@ public class RobotContainer {
     lbButton.whileTrue(m_fuel.groundIntakeCommand());
     rbButton.whileTrue(m_fuel.groundOuttakeCommand());
     xButton.whileTrue(m_fuel.shootingCommand());
-    lbButton.whileFalse(m_fuel.stopCommand());
-    rbButton.whileFalse(m_fuel.stopCommand());
-    xButton.whileFalse(m_fuel.stopCommand());
-    bButton.whileTrue(m_driveSubsystem.driveStopCommand());
+    lbButton.onFalse(m_fuel.stopCommand());
+    rbButton.onFalse(m_fuel.stopCommand());
+    xButton.onFalse(m_fuel.stopCommand());
     
     // Hold button to activate auto-lock
     //autoLockButton.onTrue
