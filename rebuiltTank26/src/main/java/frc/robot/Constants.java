@@ -43,7 +43,7 @@ public final class Constants {
   }
 
   public static final class ShooterConstants {
-    public static final int SHOOTER_FUEL_MOTOR_ID = 7;
+    //public static final int SHOOTER_FUEL_MOTOR_ID = 7;
 
     public static final double shooterInSpeed = 0.4;
     public static final double shooterOutSpeed =-0.4;
@@ -51,10 +51,10 @@ public final class Constants {
 
   public static final class ClimberConstants {
     //Climber Motor ID
-    public static final int ClimberMotorID = 9;
+    public static final int ClimberMotorID = 7;
     
-    public static final double ClimberSpeedUp = 0.4;
-    public static final double ClimberSpeedDown = -0.4;
+    public static final double ClimberSpeedUp = 0.5;
+    public static final double ClimberSpeedDown = -0.5;
   }
 
   public static final class ControllerConstants {
