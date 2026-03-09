@@ -13,6 +13,8 @@ import org.photonvision.PhotonUtils;
 public class VisionSubsystem extends SubsystemBase {
 
     private final PhotonCamera camera;
+
+    private Integer lockedTagID = null;
     
 
     public VisionSubsystem() {
@@ -23,28 +25,58 @@ public class VisionSubsystem extends SubsystemBase {
         return camera.getLatestResult().hasTargets();
     }
 
-    public int getID() {
-        PhotonTrackedTarget target = getBestTarget();
-        return target.getFiducialId();
+    // public int getID() {
+    //     PhotonTrackedTarget target = getBestTarget();
+    //     return target.getFiducialId();
+    // }
+
+    // public PhotonTrackedTarget getBestTarget() {
+    //     if (!hasTarget()) return null;
+    //     return camera.getLatestResult().getBestTarget();
+    // }
+
+    public PhotonTrackedTarget getLockedTarget() {
+    var result = camera.getLatestResult();
+
+    if (!result.hasTargets()) {
+        return null;
     }
 
-    public PhotonTrackedTarget getBestTarget() {
-        if (!hasTarget()) return null;
-        return camera.getLatestResult().getBestTarget();
+    // If we already have a locked ID, find that tag
+    if (lockedTagID != null) {
+        for (PhotonTrackedTarget t : result.getTargets()) {
+            if (t.getFiducialId() == lockedTagID) {
+                return t;
+            }
+        }
+
+        // Locked tag not visible
+        return null;
+    }
+
+    // No tag locked yet → pick best
+    PhotonTrackedTarget best = result.getBestTarget();
+    lockedTagID = best.getFiducialId();
+    return best;
+}
+
+    public void setTargetTag(int id) {
+        lockedTagID = id;
     }
 
     public double getYaw() {
-        PhotonTrackedTarget target = getBestTarget();
-        return (target == null) ? 0.0 : target.getYaw();
+        PhotonTrackedTarget target = getLockedTarget();
+        if (target == null) return 0;
+        return target.getYaw();
     }
 
     public double getDistance() {
-        PhotonTrackedTarget target = getBestTarget();
-        if (target == null) return 0.0;
+        PhotonTrackedTarget target = getLockedTarget();
+        if (target == null) return 0;
 
-        double cameraHeight = 0.5; // meters (height of camera from floor)
-        double targetHeight = 1.5; // meters (height of tag/target center)
-        double cameraPitch = Math.toRadians(20); // camera tilt angle
+        double cameraHeight = 0.5;
+        double targetHeight = 1.5;
+        double cameraPitch = Math.toRadians(20);
         double targetPitch = Math.toRadians(target.getPitch());
 
         return PhotonUtils.calculateDistanceToTargetMeters(
@@ -57,47 +89,49 @@ public class VisionSubsystem extends SubsystemBase {
 
     public Command holdDistance(DriveSubsystem drive) {
         return run(() -> {
-            if (!hasTarget()) {
+
+            PhotonTrackedTarget target = getLockedTarget();
+            if (target == null) {
                 drive.stop();
                 return;
             }
 
-        PhotonTrackedTarget target = getBestTarget();
+            double yaw = target.getYaw();
+            double distance = getDistance();
 
-        double yaw = target.getYaw();
-        // double area = target.getArea();
-        double distance = getDistance();
+            double turnKP = 0.02;
+            double forwardKP = 0.6;
 
-        // tuning constants
-        double turnKP = 0.02;
-        double forwardKP = 0.1;
+            double desiredDistance = 1.5; // meters
 
-        double desiredDistance = 10; // target size when at desired distance
+            double turn = yaw * turnKP;
+            double forward = (desiredDistance - distance) * forwardKP;
 
-        double turn = yaw * turnKP;
-        //double forward = (desiredDistance - area) * forwardKP;
-        double forward = (desiredDistance - distance) * forwardKP;
+            drive.driveArcade(forward, turn);
 
-        drive.driveArcade(forward, turn);
-        
         });
     }
 
     // Command to turn robot toward the target
     public Command turnToTarget(DriveSubsystem drive) {
         return run(() -> {
-            if (!hasTarget()) {
+
+            PhotonTrackedTarget target = getLockedTarget();
+            if (target == null) {
                 drive.stop();
                 return;
             }
 
-            double yaw = getYaw();
+            double yaw = target.getYaw();
 
-            // simple pid turn
             double kP = 0.02;
             double turn = yaw * kP;
 
             drive.driveArcade(0, turn);
-        }).until(() -> Math.abs(getYaw()) < 1.5);
+
+        }).until(() -> {
+            PhotonTrackedTarget target = getLockedTarget();
+            return target != null && Math.abs(target.getYaw()) < 1.5;
+        });
     }
 }
