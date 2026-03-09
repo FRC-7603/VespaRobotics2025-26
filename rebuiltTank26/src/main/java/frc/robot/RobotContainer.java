@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 // import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 // Subsystems
-// import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 // import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.FuelSubsystem;
 import frc.robot.Constants.ControllerConstantsLetters;
@@ -37,7 +37,7 @@ public class RobotContainer {
   // public final Climber m_climber = new Climber();
   public final FuelSubsystem m_fuel = new FuelSubsystem();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-  // public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+  public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
 
   // Reserved for future reference if AprilTags would work
   // public final AutoLockAprilTag autoLockSubsystem = new AutoLockAprilTag(driveSubsystem, visionSubsystem);
@@ -51,14 +51,6 @@ public class RobotContainer {
 
   // constructor
   public RobotContainer() {
-    // THIS IS FOR (By twice)
-    // Used for PathPlanner but idk if we can use pathplanner cuz to encoders
-    // NamedCommands.registerCommand("Shoot", m_shooter.ShooterShootCommand());
-    // NamedCommands.registerCommand("ClimbUp", m_climber.ClimberSpeedUpCommand());
-    // NamedCommands.registerCommand("ClimbDown", m_climber.ClimberSpeedDownCommand());
-    // NamedCommands.registerCommand("Intake", m_intake.intakeCommand());
-    //NamedCommands.registerCommand("fuelsystem", getAutonomousCommand());
-    //NamedCommands.registerCommand("setIntakeLauncherRoller", fuelSubsystem.setIntakeLauncherRoller(60));
   
     configureBindings();
     configureDefaultCommands();
@@ -89,10 +81,10 @@ public class RobotContainer {
     lbButton.onFalse(m_fuel.stopCommand());
     rbButton.onFalse(m_fuel.stopCommand());
     xButton.onFalse(m_fuel.stopCommand());
+
     
     // Hold button to activate auto-lock
-    //autoLockButton.onTrue
-    //autoLockButton.onFalse
+    //bButton.onTrue(m_visionSubsystem.turnToTarget());
   }
   
   private void configureDefaultCommands() {
@@ -122,17 +114,13 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-
-    // Optional<Alliance> al = DriverStation.getAlliance();
-    // if(al.isPresent()){
-    //     if(al.get() == Alliance.Blue){
-    //        return new PathPlannerAuto("Far Left Auto");
-    //     }
-    //     if(al.get() == Alliance.Red){
-    //         return new PathPlannerAuto("Far Left Auto RED");
-    //     }
-    // }
-    // return new PathPlannerAuto("Far Left Auto");
-    return null;
+        // THIS IS FOR (By twice)
+      return Commands.run(
+        () -> {
+          m_visionSubsystem.turnToTarget(m_driveSubsystem);
+          m_visionSubsystem.holdDistance(m_driveSubsystem).withTimeout(2);
+        }
+      , m_visionSubsystem
+      );
   }
 }

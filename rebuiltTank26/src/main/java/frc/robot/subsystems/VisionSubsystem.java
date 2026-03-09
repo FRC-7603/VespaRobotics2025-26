@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
+//import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -12,7 +13,7 @@ import org.photonvision.PhotonUtils;
 public class VisionSubsystem extends SubsystemBase {
 
     private final PhotonCamera camera;
-    private final DriveSubsystem drive = new DriveSubsystem();
+    
 
     public VisionSubsystem() {
         camera = new PhotonCamera("photonvision"); // must match PhotonVision UI name
@@ -20,6 +21,11 @@ public class VisionSubsystem extends SubsystemBase {
 
     public boolean hasTarget() {
         return camera.getLatestResult().hasTargets();
+    }
+
+    public int getID() {
+        PhotonTrackedTarget target = getBestTarget();
+        return target.getFiducialId();
     }
 
     public PhotonTrackedTarget getBestTarget() {
@@ -59,7 +65,8 @@ public class VisionSubsystem extends SubsystemBase {
         PhotonTrackedTarget target = getBestTarget();
 
         double yaw = target.getYaw();
-        double area = target.getArea();
+        // double area = target.getArea();
+        double distance = getDistance();
 
         // tuning constants
         double turnKP = 0.02;
@@ -68,7 +75,8 @@ public class VisionSubsystem extends SubsystemBase {
         double desiredDistance = 10; // target size when at desired distance
 
         double turn = yaw * turnKP;
-        double forward = (desiredDistance - area) * forwardKP;
+        //double forward = (desiredDistance - area) * forwardKP;
+        double forward = (desiredDistance - distance) * forwardKP;
 
         drive.driveArcade(forward, turn);
         
@@ -76,7 +84,6 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     // Command to turn robot toward the target
-
     public Command turnToTarget(DriveSubsystem drive) {
         return run(() -> {
             if (!hasTarget()) {
@@ -91,6 +98,6 @@ public class VisionSubsystem extends SubsystemBase {
             double turn = yaw * kP;
 
             drive.driveArcade(0, turn);
-        });
+        }).until(() -> Math.abs(getYaw()) < 1.5);
     }
 }
