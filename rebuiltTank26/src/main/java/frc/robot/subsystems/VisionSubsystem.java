@@ -44,9 +44,9 @@ public class VisionSubsystem extends SubsystemBase {
 
         // If we already have a locked ID, find that tag
         if (lockedTagID != null) {
-            for (PhotonTrackedTarget t : result.getTargets()) {
-                if (t.getFiducialId() == lockedTagID) {
-                    return t;
+            for (PhotonTrackedTarget tag : result.getTargets()) {
+                if (tag.getFiducialId() == lockedTagID) {
+                    return tag;
                 }
             }
 
@@ -54,7 +54,7 @@ public class VisionSubsystem extends SubsystemBase {
             return null;
         }
 
-        // No tag locked yet → pick best
+        // No tag locked yet -> pick best
         PhotonTrackedTarget best = result.getBestTarget();
         lockedTagID = best.getFiducialId();
         return best;
