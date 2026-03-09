@@ -36,32 +36,33 @@ public class VisionSubsystem extends SubsystemBase {
     // }
 
     public PhotonTrackedTarget getLockedTarget() {
-    var result = camera.getLatestResult();
+        var result = camera.getLatestResult();
 
-    if (!result.hasTargets()) {
-        return null;
-    }
-
-    // If we already have a locked ID, find that tag
-    if (lockedTagID != null) {
-        for (PhotonTrackedTarget t : result.getTargets()) {
-            if (t.getFiducialId() == lockedTagID) {
-                return t;
-            }
+        if (!result.hasTargets()) {
+            return null;
         }
 
-        // Locked tag not visible
-        return null;
-    }
+        // If we already have a locked ID, find that tag
+        if (lockedTagID != null) {
+            for (PhotonTrackedTarget t : result.getTargets()) {
+                if (t.getFiducialId() == lockedTagID) {
+                    return t;
+                }
+            }
 
-    // No tag locked yet → pick best
-    PhotonTrackedTarget best = result.getBestTarget();
-    lockedTagID = best.getFiducialId();
-    return best;
-}
+            // Locked tag not visible
+            return null;
+        }
+
+        // No tag locked yet → pick best
+        PhotonTrackedTarget best = result.getBestTarget();
+        lockedTagID = best.getFiducialId();
+        return best;
+    }
 
     public void setTargetTag(int id) {
         lockedTagID = id;
+        //ex vision.setTargetTag(7);
     }
 
     public double getYaw() {
