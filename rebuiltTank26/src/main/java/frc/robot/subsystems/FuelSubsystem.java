@@ -4,6 +4,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants.FuelConstants;
 import edu.wpi.first.wpilibj.Timer;
 
 import com.revrobotics.spark.SparkMax;
@@ -11,6 +12,10 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import static frc.robot.Constants.FuelConstants;
+
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 
 public class FuelSubsystem implements Subsystem {
     public static FuelSubsystem singleInst;
@@ -23,6 +28,8 @@ public class FuelSubsystem implements Subsystem {
     private final SparkMax m_rightMotor;
     private final SparkMaxConfig m_config_normal = new SparkMaxConfig();
     private final SparkMaxConfig m_config_inverted = new SparkMaxConfig();
+    private final RelativeEncoder m_leftEncoder;
+    private final SparkClosedLoopController m_leftPID;
 
     // constructor
     public FuelSubsystem(){
@@ -30,6 +37,8 @@ public class FuelSubsystem implements Subsystem {
         m_rightMotor = new SparkMax(FuelConstants.RIGHT_MOTOR_ID, MotorType.kBrushed); 
         m_config_normal.inverted(false);
         m_config_inverted.inverted(true);
+        m_leftEncoder = m_leftMotor.getEncoder();
+        m_leftPID = m_leftMotor.getClosedLoopController();
     }
 
     // methods
@@ -95,6 +104,23 @@ public class FuelSubsystem implements Subsystem {
         return runOnce(() -> {
         System.out.println("Fuel System Stopped");
             Stop();
+        });
+    }
+
+    public Command fireProjectileAutonomousCommand(double range, double heightTarget){
+        double gravity = 9.81;
+        double wheelCircumfrence = 0.11999999;
+        double heightLeBron = 0.4953;
+        double thota = 80; // this is in degrees to be converted to radians later
+        range +=  0.4318; //this accounts for the distance from the robots projectile storage to the fron to f the robot
+        double cosSquared = Math.cos(Math.toRadians(thota))*Math.cos(Math.toRadians(thota));
+        double constantThing = (25*60/26*Math.PI*wheelCircumfrence) * (Math.sqrt(gravity/2*cosSquared));
+        double targetRpm = constantThing*(range/
+        (Math.sqrt(range*
+        Math.tan(Math.toRadians(thota))
+        -(heightTarget - heightLeBron))))*1.4; // the 1.4 is because i assume its a closed system so to account for losses
+        return run(() -> {
+            m_leftPID.setSetpoint(targetRpm, ControlType.kVelocity);
         });
     }
 }
