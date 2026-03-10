@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.RobotContainer;
@@ -17,14 +18,13 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpil.first.wpilibj.Timer;
 
 
 
 //use tabs when code is part of class to make it more neat
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default: Backup from hub and then launch";
-  private static final String kLanchFromSide = "Launch from side and stay";
+  private static final String kLaunchFromSide = "Launch from side and stay";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   
@@ -45,14 +45,14 @@ public class Robot extends TimedRobot {
 
   //----------------- fuel mechanism paramaters ---------------
   //hey its like Boris' code during the lesson :)
-  private static final double INTAKING INTAKE VOLATGE = 9;
-  private static final double FEEDER INTAKE VOLATGE = -12;
+  private static final double INTAKING_INTAKE_VOLTAGE = 9;
+  private static final double FEEDER_INTAKE_VOLTAGE = -12;
   
-  private static final double LAUNCHING LAUNCHER VOLATGE = 10.6;
-  private static final double LAUNCHING FEEDER VOLATGE = 9;
+  private static final double LAUNCHING_LAUNCHER_VOLTAGE = 10.6;
+  private static final double LAUNCHING_FEEDER_VOLTAGE = 9;
 
-  private static final double SPIN UP FEEDER VOLATGE = -6;
-  private static final double SPIN UP SECONDS VOLATGE = 1;
+  private static final double SPINUP_FEEDER_VOLTAGE = -6;
+  private static final double SPINUP_SECONDS = 1;
 
 
   public Robot() {
@@ -69,28 +69,28 @@ public class Robot extends TimedRobot {
     
     driveConfig.follow(leftDriveLead);
     //following motor ex. leftDriveFollow will follow leftDriveLead
-    leftDriveFollow.configure(driveConfig, ResetMode.kResetSafeParamaters, PersistMode.kResetSafeParamaters);
+    leftDriveFollow.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     
     driveConfig.follow(rightDriveLead);
-    rightDriveFollow.configure(driveConfig, ResetMode.kResetSafeParamaters, PersistMode.kResetSafeParamaters);
+    rightDriveFollow.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     driveConfig.disableFollowerMode();
     driveConfig.inverted(false);
-    rightDriveLead.configure(driveConfig, ResetMode.kResetSafeParamaters, PersistMode.kPersistParamaters);
+    rightDriveLead.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     driveConfig.inverted(true);
-    lefttDriveLead.configure(driveConfig, ResetMode.kResetSafeParamaters, PersistMode.kPersistParamaters);
+    leftDriveLead.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
 
     //--------------------- Fuel/Lancher Configs-----------------
     SparkMaxConfig launcherConfig = new SparkMaxConfig();
     launcherConfig.smartCurrentLimit(60);
     launcherConfig.inverted(true);
-    intakeAndLauncherRoller.configure(launcherConfig, ResetMode.kResetSafeParamaters, PersistMode.kPersistParamaters);
+    intakeAndLauncherRoller.configure(launcherConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    SparkMaxConfig feederRoller = new SparkMaxConfig();
+    SparkMaxConfig feederConfig = new SparkMaxConfig();
     feederConfig.smartCurrentLimit(60);
-    feederRoller.configure(feederConfig, ResetMode.kResetSafeParamaters, PersistMode.kPersistParamaters);
+    feederRoller.configure(feederConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
 
   }
@@ -127,10 +127,10 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
   //will run over and over again while in auto mode at start of match
     switch (m_autoSelected) {
-      case kLanchFromSide: //Start from either side of hub aimed and launch ball, no driving
-        if(autoTimer.get() < SPIN_UP_SECONDS){
+      case kLaunchFromSide: //Start from either side of hub aimed and launch ball, no driving
+        if(autoTimer.get() < SPINUP_SECONDS){
           intakeAndLauncherRoller.setVoltage(LAUNCHING_LAUNCHER_VOLTAGE);
-          feederRoller.setVoltage(SPIN_UP_FEEDER_VOLTAGE);
+          feederRoller.setVoltage(SPINUP_FEEDER_VOLTAGE);
         }
         else if(autoTimer.get() < 11){
           intakeAndLauncherRoller.setVoltage(LAUNCHING_LAUNCHER_VOLTAGE);
@@ -154,9 +154,9 @@ public class Robot extends TimedRobot {
           myDrive.tankDrive(0,0);
         }
 
-        if(autoTimer.get() < SPIN_UP_SECONDS + .5){ //spin up the launcher
-          intakeAndLauncher.setVoltage(LAUNCHING_LAUNCHER_VOLTAGE);
-          feederRoller.setVoltage(SPIN_UP_FEEDER_VOLTAGE);
+        if(autoTimer.get() < SPINUP_SECONDS + .5){ //spin up the launcher
+          intakeAndLauncherRoller.setVoltage(LAUNCHING_LAUNCHER_VOLTAGE);
+          feederRoller.setVoltage(SPINUP_FEEDER_VOLTAGE);
           myDrive.tankDrive(.4, .4);
         }
         else if(autoTimer.get() < 11){  //10 sec launching time
