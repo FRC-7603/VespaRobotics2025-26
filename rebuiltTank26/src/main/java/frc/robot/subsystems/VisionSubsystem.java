@@ -18,7 +18,7 @@ public class VisionSubsystem extends SubsystemBase {
     
 
     public VisionSubsystem() {
-        camera = new PhotonCamera("photonvision"); // must match PhotonVision UI name
+        camera = new PhotonCamera("cam"); // must match PhotonVision UI name
     }
 
     public boolean hasTarget() {
@@ -30,10 +30,10 @@ public class VisionSubsystem extends SubsystemBase {
     //     return target.getFiducialId();
     // }
 
-    // public PhotonTrackedTarget getBestTarget() {
-    //     if (!hasTarget()) return null;
-    //     return camera.getLatestResult().getBestTarget();
-    // }
+    public PhotonTrackedTarget getBestTarget() {
+        if (!hasTarget()) return null;
+        return camera.getLatestResult().getBestTarget();
+    }
 
     public PhotonTrackedTarget getLockedTarget() {
         var result = camera.getLatestResult();
