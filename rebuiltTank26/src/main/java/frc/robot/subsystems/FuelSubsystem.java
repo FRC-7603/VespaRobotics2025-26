@@ -78,6 +78,19 @@ public class FuelSubsystem implements Subsystem {
         m_rightMotor.set(0);
     }
     
+    public void lebron() {
+        m_leftMotor.setVoltage(-8);
+        m_rightMotor.setVoltage(12.6);
+        //Timer.delay(0.234);
+        m_leftMotor.setVoltage(11);
+        m_rightMotor.setVoltage(12.6);
+    }
+
+    public void lebronTWO() {
+        m_leftMotor.setVoltage(11);
+        m_rightMotor.setVoltage(12.6);
+    }
+    
     // commands
     public Command groundIntakeCommand(){
         return runOnce(() -> {
@@ -105,6 +118,13 @@ public class FuelSubsystem implements Subsystem {
         System.out.println("Fuel System Stopped");
             Stop();
         });
+    }
+
+    public Command lebron1(){
+        return this.run(() -> lebron());
+    }
+    public Command lebron2(){
+        return this.run(() -> lebronTWO());
     }
 
     public Command fireProjectileAutonomousCommand(double range, double heightTarget){
