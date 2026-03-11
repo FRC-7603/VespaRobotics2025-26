@@ -9,15 +9,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 // import com.pathplanner.lib.auto.NamedCommands;
 // import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+// DS
 // import edu.wpi.first.wpilibj2.command.button.Trigger;
 // import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 // import static frc.robot.Constants.OperatorConstants.*;
-
-// DS
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 // Subsystems
@@ -110,6 +107,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+    m_visionSubsystem.resetLockedTag();
+
     return Commands.sequence(
 
         m_visionSubsystem
@@ -121,7 +120,5 @@ public class RobotContainer {
             .withTimeout(2)
 
     );
-
   }
-
 }
