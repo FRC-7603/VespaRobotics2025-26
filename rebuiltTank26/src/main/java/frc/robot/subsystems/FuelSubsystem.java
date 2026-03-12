@@ -78,7 +78,7 @@ public class FuelSubsystem implements Subsystem {
         m_rightMotor.set(0);
     }
     
-    public void lebron() {
+    public void Launcher() {
         m_leftMotor.setVoltage(-8);
         m_rightMotor.setVoltage(12.6);
         //Timer.delay(0.234);
@@ -86,7 +86,7 @@ public class FuelSubsystem implements Subsystem {
         m_rightMotor.setVoltage(12.6);
     }
 
-    public void lebronTWO() {
+    public void Spinup() {
         m_leftMotor.setVoltage(11);
         m_rightMotor.setVoltage(12.6);
     }
@@ -120,11 +120,11 @@ public class FuelSubsystem implements Subsystem {
         });
     }
 
-    public Command lebron1(){
-        return this.run(() -> lebron());
+    public Command launcherCommand(){
+        return this.run(() -> Launcher());
     }
-    public Command lebron2(){
-        return this.run(() -> lebronTWO());
+    public Command spinupCommand(){
+        return this.run(() -> Spinup());
     }
 
     public Command fireProjectileAutonomousCommand(double range, double heightTarget){

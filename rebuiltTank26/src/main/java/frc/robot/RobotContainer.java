@@ -75,7 +75,14 @@ public class RobotContainer {
     rbButton.onFalse(m_fuel.stopCommand());
     xButton.onFalse(m_fuel.stopCommand());
 
-    bButton.whileTrue(m_fuel.lebron2().withTimeout(3).andThen(m_fuel.lebron1()).finallyDo(() -> m_fuel.stopCommand()));
+    bButton.whileTrue(
+      m_fuel.spinupCommand()
+      .withTimeout(3)
+      .andThen(m_fuel.launcherCommand())
+      .finallyDo(
+        () -> m_fuel.stopCommand()
+      )
+    );
     // Hold button to activate auto-lock
     //bButton.onTrue(m_visionSubsystem.turnToTarget());
   }
