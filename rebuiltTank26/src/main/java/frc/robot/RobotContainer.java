@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 // import com.pathplanner.lib.auto.NamedCommands;
 // import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+
 // DS
 // import edu.wpi.first.wpilibj2.command.button.Trigger;
 // import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -31,9 +32,6 @@ public class RobotContainer {
   public final FuelSubsystem m_fuel = new FuelSubsystem();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
-
-  // Reserved for future reference if AprilTags would work
-  // public final AutoLockAprilTag autoLockSubsystem = new AutoLockAprilTag(driveSubsystem, visionSubsystem);
 
   // The operator's controller
   // private final CommandXboxController operatorController = new CommandXboxController(
@@ -110,18 +108,17 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    m_visionSubsystem.resetLockedTag();
+    // m_visionSubsystem.resetLockedTag();
 
-    return Commands.sequence(
+    return Commands.sequence(m_visionSubsystem.turnToTarget(m_driveSubsystem)
 
-        m_visionSubsystem
-            .turnToTarget(m_driveSubsystem)
-            .withTimeout(3),
+      // m_visionSubsystem
+      //     .turnToTarget(m_driveSubsystem)
+      //     .withTimeout(3),
 
-        m_visionSubsystem
-            .holdDistance(m_driveSubsystem)
-            .withTimeout(2)
-
+      // m_visionSubsystem
+      //     .holdDistance(m_driveSubsystem)
+      //     .withTimeout(2)
     );
   }
 }
