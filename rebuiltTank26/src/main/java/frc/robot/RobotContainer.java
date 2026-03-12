@@ -86,7 +86,10 @@ public class RobotContainer {
     m_driveSubsystem.setDefaultCommand(
       Commands.run(
         () -> m_driveSubsystem.driveArcade(
-          -stick.getRawAxis(ControllerConstantsLetters.rightJoystickYAxis), // forward/back
+          //-stick.getRawAxis(ControllerConstantsLetters.rightJoystickYAxis), // forward/back
+          //stick.getRawAxis(ControllerConstantsLetters.leftJoystickXAxis)   // turn
+
+          -stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis), // forward/back
           stick.getRawAxis(ControllerConstantsLetters.leftJoystickXAxis)   // turn
         ),
         m_driveSubsystem
