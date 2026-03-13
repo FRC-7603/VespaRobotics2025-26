@@ -73,7 +73,8 @@ public class RobotContainer {
     rbButton.onFalse(m_fuel.stopCommand());
     xButton.onFalse(m_fuel.stopCommand());
 
-    bButton.whileTrue(m_fuel.lebron2().withTimeout(3).andThen(m_fuel.lebron1()).finallyDo(() -> m_fuel.stopCommand()));
+    bButton.whileTrue(m_fuel.lebron2().withTimeout(0.5).andThen(m_fuel.lebron1()).finallyDo(() -> m_fuel.stopCommand()));
+    bButton.whileFalse(m_fuel.stopCommand());
     // Hold button to activate auto-lock
     //bButton.onTrue(m_visionSubsystem.turnToTarget());
   }
@@ -84,11 +85,11 @@ public class RobotContainer {
     m_driveSubsystem.setDefaultCommand(
       Commands.run(
         () -> m_driveSubsystem.driveArcade(
-          //-stick.getRawAxis(ControllerConstantsLetters.rightJoystickYAxis), // forward/back
-          //stick.getRawAxis(ControllerConstantsLetters.leftJoystickXAxis)   // turn
+          stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis), // forward/back
+          stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis)   // turn
 
-          -stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis), // forward/back
-          stick.getRawAxis(ControllerConstantsLetters.leftJoystickXAxis)   // turn
+          //stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis), // forward/back
+          //stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis)   // turn
         ),
         m_driveSubsystem
       )
@@ -108,17 +109,12 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // m_visionSubsystem.resetLockedTag();
 
-    return Commands.sequence(m_visionSubsystem.turnToTarget(m_driveSubsystem)
+     System.out.println("AUTO START");
 
-      // m_visionSubsystem
-      //     .turnToTarget(m_driveSubsystem)
-      //     .withTimeout(3),
+      m_visionSubsystem.setTargetTag(7);
 
-      // m_visionSubsystem
-      //     .holdDistance(m_driveSubsystem)
-      //     .withTimeout(2)
-    );
+      return m_visionSubsystem.driveToTagLEBRON(m_driveSubsystem, 1.5);
+
   }
 }
