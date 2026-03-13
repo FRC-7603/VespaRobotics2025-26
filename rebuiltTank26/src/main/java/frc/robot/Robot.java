@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.BackupAuto;
 
 public class Robot extends TimedRobot {
 
@@ -21,7 +20,6 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private final RobotContainer m_robotContainer = new RobotContainer();
-  private final BackupAuto m_backupAuto = new BackupAuto();
 
   public Robot() {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -53,7 +51,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     switch(m_autoSelected) {
       case kBackupAuto:
-        m_autonomousCommand = m_backupAuto.simpleAuto();
+        m_autonomousCommand = m_robotContainer.simpleAuto();
         break;
       case kDefaultAuto:
       default:
