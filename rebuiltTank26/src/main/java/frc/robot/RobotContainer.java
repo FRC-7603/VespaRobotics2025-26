@@ -114,7 +114,8 @@ public class RobotContainer {
 
       m_visionSubsystem.setTargetTag(7);
 
-      return m_visionSubsystem.driveToTagLEBRON(m_driveSubsystem, 1.5);
+      //return m_visionSubsystem.driveToTagLEBRON(m_driveSubsystem, 1.5);
+      return m_visionSubsystem.turnToTagTWOLEBRON(m_driveSubsystem).andThen(m_visionSubsystem.driveToTagTWOLEBRON(m_driveSubsystem, 1.5));
 
       //return simpleAuto();
 

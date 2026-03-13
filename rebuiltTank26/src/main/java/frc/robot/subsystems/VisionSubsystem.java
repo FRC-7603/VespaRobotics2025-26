@@ -44,7 +44,8 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     public boolean hasTarget() {
-        return camera.getLatestResult().hasTargets();
+        //return camera.getLatestResult().hasTargets();
+        return latestResult.hasTargets();
     }
 
     // public int getID() {
@@ -204,6 +205,88 @@ public class VisionSubsystem extends SubsystemBase {
 
     // Stop robot when command ends
     .finallyDo((interrupted) -> drive.stop());
-}
+    }
+    // Turn robot until tag is centered
+    public Command turnToTagTWOLEBRON(DriveSubsystem drive) {
+
+        return run(() -> {
+
+            PhotonTrackedTarget target = getLockedTarget();
+
+            if (target == null) {
+                drive.stop();
+                return;
+            }
+
+            double yawError = target.getYaw();
+
+            double kTurn = 0.02;
+            double turn = yawError * kTurn;
+
+            // Clamp turn speed
+            turn = Math.max(-0.4, Math.min(0.4, turn));
+
+            drive.driveArcade(0, turn);
+
+            System.out.println("Yaw: " + yawError);
+
+        })
+
+        .until(() -> {
+            PhotonTrackedTarget target = getLockedTarget();
+            return target != null && Math.abs(target.getYaw()) < 1.5;
+        })
+
+        .finallyDo((interrupted) -> drive.stop());
+    }
+    public Command driveToTagTWOLEBRON(DriveSubsystem drive, double targetDistanceMeters) {
+
+        return run(() -> {
+
+            PhotonTrackedTarget target = getLockedTarget();
+
+            if (target == null) {
+                drive.stop();
+                System.out.println("No target");
+                return;
+            }
+
+            double yaw = target.getYaw();
+            double distance = getDistance();
+
+            double yawError = yaw;
+            double distanceError = distance - targetDistanceMeters;
+
+            double kTurn = 0.02;
+            double kForward = 0.6;
+
+            double turn = yawError * kTurn;
+            double forward = distanceError * kForward;
+
+            // Clamp speeds
+            turn = Math.max(-0.4, Math.min(0.4, turn));
+            forward = Math.max(-0.5, Math.min(0.5, forward));
+
+            drive.driveArcade(forward, turn);
+
+            System.out.println("Distance: " + distance);
+            System.out.println("Yaw: " + yaw);
+
+        })
+
+        .until(() -> {
+
+            PhotonTrackedTarget target = getLockedTarget();
+            if (target == null) return false;
+
+            double distanceError = Math.abs(getDistance() - targetDistanceMeters);
+            double yawError = Math.abs(target.getYaw());
+
+            return distanceError < 0.15 && yawError < 2;
+
+        })
+
+        .finallyDo((interrupted) -> drive.stop());
+    }
 
 }
