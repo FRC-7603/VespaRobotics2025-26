@@ -55,6 +55,11 @@ public final class Constants {
     
     public static final double ClimberSpeedUp = 0.5;
     public static final double ClimberSpeedDown = -0.5;
+
+    public static final double Climber_UP_VOLTAGE = 20;
+    public static final double Climber_DOWN_VOLTAGE = 15;
+
+    public static final int Climber_MOTOR_CURRENT_LIMIT = 60;
   }
 
   public static final class ControllerConstants {
@@ -77,6 +82,24 @@ public final class Constants {
   }
 
     public static final class ControllerConstantsLetters {
+      public static final int A = 1;
+      public static final int B = 2;
+      public static final int X = 3;
+      public static final int Y = 4;
+      public static final int LB = 5;
+      public static final int RB = 6;
+      public static final int back = 7;
+      public static final int start = 8;
+      public static final int leftJoystickPress = 9;
+      public static final int rightJoystickPress = 10;
+
+      public static final int leftJoystickXAxis = 0;
+      public static final int leftJoystickYAxis = 1;
+      public static final int rightJoystickXAxis = 4;
+      public static final int rightJoystickYAxis = 5;
+  }
+
+  public static final class XBOXControllerConstantsLetters {
       public static final int A = 1;
       public static final int B = 2;
       public static final int X = 3;
