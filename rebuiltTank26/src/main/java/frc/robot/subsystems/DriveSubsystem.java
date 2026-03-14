@@ -26,7 +26,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final DifferentialDrive drive;
 
-
   // constructor
   public DriveSubsystem() {
     // create brushed motors for drive
@@ -72,11 +71,6 @@ public class DriveSubsystem extends SubsystemBase {
     //leftLeader.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  @Override
-  public void periodic() {
-  }
-
-
   // methods
   public void driveArcade(double xSpeed, double zRotation) {
     drive.arcadeDrive(xSpeed, zRotation);
@@ -91,6 +85,20 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   // commands
+  public Command autoDriveForwardCommand() {
+    return runOnce(() -> {
+      driveArcade(0.5, 0);
+      System.out.println("AUTO: driving forward");
+    });
+  }
+
+  public Command autoDriveBackwardCommand() {
+    return runOnce(() -> {
+      driveArcade(-0.5, 0);
+      System.out.println("AUTO: driving backward");
+    });
+  }
+
   public Command driveStopCommand() {
     return run(() -> stop());
   }

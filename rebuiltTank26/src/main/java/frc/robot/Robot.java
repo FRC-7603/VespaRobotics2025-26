@@ -10,12 +10,12 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FuelSubsystem;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ControllerConstantsLetters;
 
@@ -63,8 +63,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
 
-
-
     // Dashboard Diagnostics
     // SmartDashboard.putNumber("CAN Utilization %", RobotController.getCANStatus().percentBusUtilization * 100.0);
     // SmartDashboard.putNumber("CPU Temperature", RobotController.getCPUTemp());
@@ -87,10 +85,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
     System.out.println("Auto selected: " + m_autoSelected);
-  }
 
-  @Override
-  public void autonomousPeriodic() {
     switch(m_autoSelected) {
       case kBackupAuto:
         m_autonomousCommand = m_robotContainer.simpleAuto();
@@ -101,12 +96,14 @@ public class Robot extends TimedRobot {
       case kNoAuto:
         break;
       default:
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        m_autonomousCommand = m_robotContainer.simpleAuto();
+        break;
     }
+  }
 
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+  @Override
+  public void autonomousPeriodic() {
+    CommandScheduler.getInstance().schedule(m_robotContainer.simpleAuto());
   }
 
   @Override

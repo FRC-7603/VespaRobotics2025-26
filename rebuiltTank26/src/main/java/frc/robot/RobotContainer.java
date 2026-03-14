@@ -75,8 +75,8 @@ public class RobotContainer {
     bButton.whileTrue(m_fuel.lebron2().withTimeout(0.5).andThen(m_fuel.lebron1()).finallyDo(() -> m_fuel.stopCommand()));
     bButton.whileFalse(m_fuel.stopCommand());
 
-    //rbButton.onTrue(m_fuel.groundOuttakeCommand());
-    rbButton.onTrue(m_fuel.fireProjectileAutonomousCommand(m_visionSubsystem.getDistance(), 72));
+    rbButton.onTrue(m_fuel.groundOuttakeCommand());
+    //rbButton.onTrue(m_fuel.fireProjectileAutonomousCommand(m_visionSubsystem.getDistance(), 72));
     rbButton.onFalse(m_fuel.stopCommand());
 
     lbButton.onTrue(m_fuel.groundIntakeCommand());
@@ -130,7 +130,7 @@ public class RobotContainer {
                 // If Xbox Controller is being used, override
                 if (Math.abs(xboxController.getRawAxis(XBOXControllerConstantsLetters.leftJoystickYAxis)) > 0.1 ||
                     Math.abs(xboxController.getRawAxis(XBOXControllerConstantsLetters.rightJoystickXAxis)) > 0.1) {
-                    forward = -xboxController.getRawAxis(XBOXControllerConstantsLetters.leftJoystickYAxis);
+                    forward = xboxController.getRawAxis(XBOXControllerConstantsLetters.leftJoystickYAxis);
                     turn    = xboxController.getRawAxis(XBOXControllerConstantsLetters.rightJoystickXAxis);
                 }
 
@@ -166,19 +166,24 @@ public class RobotContainer {
   }
 
     public Command simpleAuto() {
-    return Commands.sequence(
+      return Commands.sequence(
 
-        // Step 1: step back 1.5 meters (approx)
-        Commands.run(() -> m_driveSubsystem.driveArcade(-0.5, 0), m_driveSubsystem).withTimeout(1.2),
-        m_driveSubsystem.driveStopCommand(),
+        // Step 1: step forward 1.5 meters (approx)
+        Commands.runEnd(() -> m_driveSubsystem.driveArcade(-0.5, 0), () -> m_driveSubsystem.driveArcade(0,0), m_driveSubsystem).withTimeout(5.0),
 
         // Step 2: shoot
+        Commands.runOnce(() -> System.out.println("guh2")),
         m_fuel.autoShootingCommand(),
-        new WaitCommand(5),
 
-        // Step 3: step forward
-        Commands.run(() -> m_driveSubsystem.driveArcade(0.5, 0), m_driveSubsystem).withTimeout(1.2),
-        m_driveSubsystem.driveStopCommand()
+        // Step 3: step back 1.5 meters (approx)
+        Commands.runOnce(() -> System.out.println("guh3")),
+        Commands.runEnd(() -> {
+          m_driveSubsystem.autoDriveForwardCommand().withTimeout(1);
+          System.out.println("guh");
+        }, () -> {
+          m_driveSubsystem.driveStopCommand();
+          System.out.println("guh2");
+        }, m_driveSubsystem).withTimeout(5.0)
 
         // // Step 4: turn 30°
         // Commands.run(() -> m_driveSubsystem.driveArcade(0, 0.4), m_driveSubsystem).withTimeout(0.5),
