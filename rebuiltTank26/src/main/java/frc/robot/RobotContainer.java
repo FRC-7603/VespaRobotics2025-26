@@ -10,22 +10,25 @@ import edu.wpi.first.wpilibj2.command.Commands;
 // import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-// DS
-// import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.XBOXControllerConstantsLetters;
+
+// DS + logitech controller
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 // import static frc.robot.Constants.OperatorConstants.*;
+// import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 // Subsystems
 import frc.robot.subsystems.VisionSubsystem;
 // import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.FuelSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
+
+//XBOX
 import frc.robot.Constants.ControllerConstantsLetters;
 import frc.robot.Constants.XBOXControllerConstantsLetters;
-import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+
 
 public class RobotContainer {
   // the only controller that is used right now
@@ -42,7 +45,8 @@ public class RobotContainer {
   // constructor
   public RobotContainer() {
   
-    configureBindings();
+    configureBindings();       // Logitech
+    configureBindingsXBOX();   // Xbox
     configureDefaultCommands();
     System.out.println("Robot started.");
     }
@@ -50,24 +54,41 @@ public class RobotContainer {
 
   private void configureBindingsXBOX() {
 
+    //JoystickButton aButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.A);
+    //JoystickButton yButton = new JoystickButton(xboxController, ControllerConstantsLetters.Y);
     JoystickButton bButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.B);
     JoystickButton xButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.X);
     JoystickButton lbButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.LB);
     JoystickButton rbButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.RB);
+    JoystickButton leftTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.left_triggerAxis);
+    JoystickButton rightTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.right_triggerAxis);
+    
+    //aButton.onTrue(climb.down)
+    //aButton.onFalse(climb.down)
 
-    lbButton.onTrue(m_fuel.groundIntakeCommand());
-    rbButton.onTrue(m_fuel.groundOuttakeCommand());
+    //yButton.onTrue(climb.down)
+    //yButton.onFalse(climb.down)
+
     xButton.onTrue(m_fuel.shootingCommand());
-    lbButton.onFalse(m_fuel.stopCommand());
-    rbButton.onFalse(m_fuel.stopCommand());
     xButton.onFalse(m_fuel.stopCommand());
 
     bButton.whileTrue(m_fuel.lebron2().withTimeout(0.5).andThen(m_fuel.lebron1()).finallyDo(() -> m_fuel.stopCommand()));
     bButton.whileFalse(m_fuel.stopCommand());
 
+    //rbButton.onTrue(m_fuel.groundOuttakeCommand());
+    rbButton.onTrue(m_fuel.fireProjectileAutonomousCommand(m_visionSubsystem.getDistance(), 72));
+    rbButton.onFalse(m_fuel.stopCommand());
+
+    lbButton.onTrue(m_fuel.groundIntakeCommand());
+    lbButton.onFalse(m_fuel.stopCommand());
+    
+    leftTrigger.onTrue(m_visionSubsystem.turnToTagTWOLEBRON(m_driveSubsystem));
+    //leftTrigger.onFalse(m_driveSubsystem.stop());
+
   }
 
   private void configureBindings() {
+  //this is for Logitech (THIS IS FOR BY TWICE!?!)
   
     // Buttons (change numbers if needed)
     // JoystickButton DynamicOutTake = new JoystickButton(stick, ControllerConstants.DynamicOutTake);
@@ -83,7 +104,7 @@ public class RobotContainer {
     // JoystickButton leftJopAystickButton = new JoystickButton(stick, ControllerConstantsLetters.leftJoystickPress);
     // JoystickButton rightJoystickButton = new JoystickButton(stick, ControllerConstantsLetters.rightJoystickPress);
 
-    //this is for Logitech (THIS IS FOR BY TWICE!?!)
+
     lbButton.onTrue(m_fuel.groundIntakeCommand());
     rbButton.onTrue(m_fuel.groundOuttakeCommand());
     xButton.onTrue(m_fuel.shootingCommand());
@@ -106,7 +127,7 @@ public class RobotContainer {
                 double forward = -stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis)*0.9;
                 double turn    = stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis)*0.9;
 
-                // If Xbox joystick is being used, override
+                // If Xbox Controller is being used, override
                 if (Math.abs(xboxController.getRawAxis(XBOXControllerConstantsLetters.leftJoystickYAxis)) > 0.1 ||
                     Math.abs(xboxController.getRawAxis(XBOXControllerConstantsLetters.rightJoystickXAxis)) > 0.1) {
                     forward = xboxController.getRawAxis(XBOXControllerConstantsLetters.leftJoystickYAxis);
