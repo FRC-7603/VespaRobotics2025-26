@@ -102,7 +102,7 @@ public final class Constants {
   public static final class XBOXControllerConstantsLetters {
       public static final int A = 1;
       public static final int B = 2;
-      public static final int X = 3;
+      public static final int X = 3; 
       public static final int Y = 4;
       public static final int LB = 5;
       public static final int RB = 6;
@@ -115,6 +115,9 @@ public final class Constants {
       public static final int leftJoystickYAxis = 1;
       public static final int rightJoystickXAxis = 4;
       public static final int rightJoystickYAxis = 5;
+
+      public static final int left_triggerAxis = 2;
+      public static final int right_triggerAxis = 3;
   }
 
   public static final class OperatorConstants {
