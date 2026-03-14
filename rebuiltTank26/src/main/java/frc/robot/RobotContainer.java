@@ -124,13 +124,13 @@ public class RobotContainer {
     m_driveSubsystem.setDefaultCommand(
       Commands.run(
             () -> {
-                double forward = -stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis)*0.9;
-                double turn    = stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis)*0.9;
+                double forward = -stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis)*0.7;
+                double turn    = stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis)*0.7;
 
                 // If Xbox Controller is being used, override
                 if (Math.abs(xboxController.getRawAxis(XBOXControllerConstantsLetters.leftJoystickYAxis)) > 0.1 ||
                     Math.abs(xboxController.getRawAxis(XBOXControllerConstantsLetters.rightJoystickXAxis)) > 0.1) {
-                    forward = xboxController.getRawAxis(XBOXControllerConstantsLetters.leftJoystickYAxis);
+                    forward = -xboxController.getRawAxis(XBOXControllerConstantsLetters.leftJoystickYAxis);
                     turn    = xboxController.getRawAxis(XBOXControllerConstantsLetters.rightJoystickXAxis);
                 }
 
@@ -169,15 +169,15 @@ public class RobotContainer {
     return Commands.sequence(
 
         // Step 1: step back 1.5 meters (approx)
-        Commands.run(() -> m_driveSubsystem.driveArcade(-0.5, 0), m_driveSubsystem).withTimeout(1.5),
+        Commands.run(() -> m_driveSubsystem.driveArcade(-0.5, 0), m_driveSubsystem).withTimeout(1.2),
         m_driveSubsystem.driveStopCommand(),
 
         // Step 2: shoot
-        m_fuel.shootingCommand(),
-        new WaitCommand(1.5),
+        m_fuel.autoShootingCommand(),
+        new WaitCommand(5),
 
         // Step 3: step forward
-        Commands.run(() -> m_driveSubsystem.driveArcade(0.5, 0), m_driveSubsystem).withTimeout(1.5),
+        Commands.run(() -> m_driveSubsystem.driveArcade(0.5, 0), m_driveSubsystem).withTimeout(1.2),
         m_driveSubsystem.driveStopCommand()
 
         // // Step 4: turn 30°

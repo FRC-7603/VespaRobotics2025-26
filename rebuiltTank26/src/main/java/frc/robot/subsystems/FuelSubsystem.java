@@ -61,6 +61,14 @@ public class FuelSubsystem implements Subsystem {
         m_rightMotor.setVoltage(22.0);
     }
 
+        public void autoShoot(){
+        m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        m_rightMotor.configure(m_config_normal, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        m_leftMotor.setVoltage(22.0);
+        Timer.delay(0.2);
+        m_rightMotor.setVoltage(22.0);
+    }
+
     public void groundIntake(){
         setInvert(false);
         m_leftMotor.set(FuelConstants.fuelInSpeed);
@@ -110,6 +118,13 @@ public class FuelSubsystem implements Subsystem {
         return runOnce(() -> {
             System.out.println("Shooting Command Ran");
             shoot();
+        });
+    }
+
+        public Command autoShootingCommand(){
+        return runOnce(() -> {
+            System.out.println("AUTO: Shooting Command Ran");
+            autoShoot();
         });
     }
     
