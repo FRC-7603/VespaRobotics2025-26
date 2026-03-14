@@ -100,24 +100,28 @@ public final class Constants {
   }
 
   public static final class XBOXControllerConstantsLetters {
-      public static final int A = 1;
-      public static final int B = 2;
-      public static final int X = 3; 
-      public static final int Y = 4;
-      public static final int LB = 5;
-      public static final int RB = 6;
-      public static final int back = 7;
-      public static final int start = 8;
-      public static final int leftJoystickPress = 9;
-      public static final int rightJoystickPress = 10;
+    
+    public static final int A = 1; // Boost or Climb down
+    public static final int B = 2; // G-outtake
+    public static final int X = 3; //Shoot
+    public static final int Y = 4; // Climb Up
+    public static final int LB = 5; // intake
+    public static final int RB = 6; // Climb Down
 
-      public static final int leftJoystickXAxis = 0;
-      public static final int leftJoystickYAxis = 1;
-      public static final int rightJoystickXAxis = 4;
-      public static final int rightJoystickYAxis = 5;
+    //prob dont use
+    public static final int back = 7;
+    public static final int start = 8;
+    public static final int leftJoystickPress = 9;
+    public static final int rightJoystickPress = 10;
 
-      public static final int left_triggerAxis = 2;
-      public static final int right_triggerAxis = 3;
+    //Axis
+    public static final int leftJoystickXAxis = 0;
+    public static final int leftJoystickYAxis = 1;
+    public static final int rightJoystickXAxis = 4;
+    public static final int rightJoystickYAxis = 5;
+
+    public static final int left_triggerAxis = 2; // AUTO ALINE
+    public static final int right_triggerAxis = 3; // Dynamic OutTake / LE BRON
   }
 
   public static final class OperatorConstants {
