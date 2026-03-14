@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 // DS
 // import edu.wpi.first.wpilibj2.command.button.Trigger;
-// import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.XBOXControllerConstantsLetters;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -23,19 +24,17 @@ import frc.robot.subsystems.VisionSubsystem;
 // import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.FuelSubsystem;
 import frc.robot.Constants.ControllerConstantsLetters;
+import frc.robot.Constants.XBOXControllerConstantsLetters;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class RobotContainer {
   // the only controller that is used right now
   public final Joystick stick = new Joystick(0);
+  public final XboxController xboxController = new XboxController(0);
   // public final Climber m_climber = new Climber();
   public final FuelSubsystem m_fuel = new FuelSubsystem();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
-
-  // The operator's controller
-  // private final CommandXboxController operatorController = new CommandXboxController(
-  //     OPERATOR_CONTROLLER_PORT);
 
   // The operator's controller
   // private final Joystick operatorController = new Joystick(OPERATOR_CONTROLLER_PORT);
@@ -48,6 +47,25 @@ public class RobotContainer {
     System.out.println("Robot started.");
     }
 
+
+  private void configureBindingsXBOX() {
+
+    JoystickButton bButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.B);
+    JoystickButton xButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.X);
+    JoystickButton lbButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.LB);
+    JoystickButton rbButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.RB);
+
+    lbButton.onTrue(m_fuel.groundIntakeCommand());
+    rbButton.onTrue(m_fuel.groundOuttakeCommand());
+    xButton.onTrue(m_fuel.shootingCommand());
+    lbButton.onFalse(m_fuel.stopCommand());
+    rbButton.onFalse(m_fuel.stopCommand());
+    xButton.onFalse(m_fuel.stopCommand());
+
+    bButton.whileTrue(m_fuel.lebron2().withTimeout(0.5).andThen(m_fuel.lebron1()).finallyDo(() -> m_fuel.stopCommand()));
+    bButton.whileFalse(m_fuel.stopCommand());
+
+  }
 
   private void configureBindings() {
   
@@ -84,17 +102,22 @@ public class RobotContainer {
     // Drivetrain Subsystem
     m_driveSubsystem.setDefaultCommand(
       Commands.run(
-        () -> m_driveSubsystem.driveArcade(
-          stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis), // forward/back
-          stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis)   // turn
+            () -> {
+                double forward = stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis);
+                double turn    = stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis);
 
-          //stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis), // forward/back
-          //stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis)   // turn
-        ),
-        m_driveSubsystem
-      )
+                // If Xbox joystick is being used, override
+                if (Math.abs(xboxController.getRawAxis(XBOXControllerConstantsLetters.leftJoystickYAxis)) > 0.1 ||
+                    Math.abs(xboxController.getRawAxis(XBOXControllerConstantsLetters.rightJoystickXAxis)) > 0.1) {
+                    forward = xboxController.getRawAxis(XBOXControllerConstantsLetters.leftJoystickYAxis);
+                    turn    = xboxController.getRawAxis(XBOXControllerConstantsLetters.rightJoystickXAxis);
+                }
+
+                m_driveSubsystem.driveArcade(forward, turn);
+            },
+            m_driveSubsystem
+        )
     );
-
 
     // Climber Subsystem
     // m_climber.setDefaultCommand(
