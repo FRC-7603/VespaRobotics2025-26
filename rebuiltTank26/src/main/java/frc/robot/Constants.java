@@ -13,7 +13,7 @@ public final class Constants {
     public static final int RIGHT_LEADER_ID = 2;
     public static final int RIGHT_FOLLOWER_ID = 4;
 
-    public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
+    public static final int DRIVE_MOTOR_CURRENT_LIMIT = 50; //max 60
   }
 
   public static final class FuelConstants {

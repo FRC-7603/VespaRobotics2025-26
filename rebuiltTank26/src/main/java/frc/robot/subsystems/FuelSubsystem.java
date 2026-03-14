@@ -57,8 +57,8 @@ public class FuelSubsystem implements Subsystem {
         m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_rightMotor.configure(m_config_normal, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_leftMotor.setVoltage(20.0);
-        Timer.delay(1);
-        m_rightMotor.setVoltage(20.0);
+        Timer.delay(0.2);
+        m_rightMotor.setVoltage(22.0);
     }
 
     public void groundIntake(){

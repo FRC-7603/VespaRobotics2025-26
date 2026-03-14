@@ -71,18 +71,18 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    // switch(m_autoSelected) {
-    //   case kBackupAuto:
-    //     m_autonomousCommand = m_robotContainer.simpleAuto();
-    //     break;
-    //   case kDefaultAuto:
-    //   default:
-    //     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    //     if (m_autonomousCommand != null) {
-    //       m_autonomousCommand.schedule();
-    //     }
-    //     break;
-    // }
+    switch(m_autoSelected) {
+      case kBackupAuto:
+        m_autonomousCommand = m_robotContainer.simpleAuto();
+        break;
+      case kDefaultAuto:
+      default:
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        if (m_autonomousCommand != null) {
+          m_autonomousCommand.schedule();
+        }
+        break;
+    }
   }
 
   @Override
