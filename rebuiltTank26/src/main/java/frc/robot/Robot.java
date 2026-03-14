@@ -97,17 +97,15 @@ public class Robot extends TimedRobot {
         break;
       case kDefaultAuto:
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-        if (m_autonomousCommand != null) {
-          m_autonomousCommand.schedule();
-        }
         break;
       case kNoAuto:
         break;
       default:
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-        if (m_autonomousCommand != null) {
-          m_autonomousCommand.schedule();
-        }
+    }
+
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
     }
   }
 

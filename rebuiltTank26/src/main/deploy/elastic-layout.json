@@ -5,51 +5,11 @@
     {
       "name": "Autonomous",
       "grid_layout": {
-        "layouts": [
-          {
-            "title": "CameraPublisher",
-            "x": 896.0,
-            "y": 0.0,
-            "width": 384.0,
-            "height": 512.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
-              {
-                "title": "photonvision_Port_1181_Input_MJPEG_Server",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 256.0,
-                "type": "Camera Stream",
-                "properties": {
-                  "topic": "/CameraPublisher/photonvision_Port_1181_Input_MJPEG_Server",
-                  "period": 0.06,
-                  "rotation_turns": 0
-                }
-              },
-              {
-                "title": "photonvision_Port_1183_Input_MJPEG_Server",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 256.0,
-                "type": "Camera Stream",
-                "properties": {
-                  "topic": "/CameraPublisher/photonvision_Port_1183_Input_MJPEG_Server",
-                  "period": 0.06,
-                  "rotation_turns": 0
-                }
-              }
-            ]
-          }
-        ],
+        "layouts": [],
         "containers": [
           {
             "title": "Voltage",
-            "x": 512.0,
+            "x": 640.0,
             "y": 256.0,
             "width": 384.0,
             "height": 128.0,
@@ -67,7 +27,7 @@
           },
           {
             "title": "Alliance Color",
-            "x": 0.0,
+            "x": 128.0,
             "y": 0.0,
             "width": 128.0,
             "height": 128.0,
@@ -80,7 +40,7 @@
           },
           {
             "title": "Autonomous Chooser",
-            "x": 128.0,
+            "x": 256.0,
             "y": 0.0,
             "width": 384.0,
             "height": 128.0,
@@ -92,7 +52,7 @@
           },
           {
             "title": "FMS Info",
-            "x": 512.0,
+            "x": 640.0,
             "y": 384.0,
             "width": 384.0,
             "height": 128.0,
@@ -104,7 +64,7 @@
           },
           {
             "title": "Match Time",
-            "x": 512.0,
+            "x": 640.0,
             "y": 0.0,
             "width": 384.0,
             "height": 256.0,
@@ -120,7 +80,7 @@
           },
           {
             "title": "Speed",
-            "x": 0.0,
+            "x": 128.0,
             "y": 128.0,
             "width": 256.0,
             "height": 384.0,
@@ -141,7 +101,7 @@
           },
           {
             "title": "Turn",
-            "x": 256.0,
+            "x": 384.0,
             "y": 128.0,
             "width": 256.0,
             "height": 384.0,
@@ -158,6 +118,19 @@
               "wrap_value": false,
               "show_pointer": true,
               "show_ticks": true
+            }
+          },
+          {
+            "title": "Camera",
+            "x": 1024.0,
+            "y": 0.0,
+            "width": 512.0,
+            "height": 512.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/photonvision_Port_1183_Input_MJPEG_Server",
+              "period": 0.06,
+              "rotation_turns": 0
             }
           }
         ]
