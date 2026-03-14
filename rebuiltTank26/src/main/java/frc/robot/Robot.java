@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.ControllerConstantsLetters;
+
 import java.util.Optional;
 
 public class Robot extends TimedRobot {
@@ -51,6 +54,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
+    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
+
+    // Dashboard Diagnostics
+    // SmartDashboard.putNumber("CAN Utilization %", RobotController.getCANStatus().percentBusUtilization * 100.0);
+    // SmartDashboard.putNumber("CPU Temperature", RobotController.getCPUTemp());
+    // SmartDashboard.putBoolean("RSL", RobotController.getRSLState());
+    SmartDashboard.putNumber("Speed", DriverStation.getStickAxis(0, ControllerConstantsLetters.leftJoystickYAxis));
+    SmartDashboard.putNumber("Turn", DriverStation.getStickAxis(0, ControllerConstantsLetters.rightJoystickXAxis));
     CommandScheduler.getInstance().run();
   }
 
