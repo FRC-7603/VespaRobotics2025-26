@@ -4,10 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -24,6 +26,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private static final String kDefaultAuto = "Default";
   private static final String kBackupAuto = "Backup Auto";
+  private static final String kNoAuto = "No Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -33,6 +36,7 @@ public class Robot extends TimedRobot {
     // Autonomous Chooser
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("Backup Auto", kBackupAuto);
+    m_chooser.addOption("No Auto", kNoAuto);
     SmartDashboard.putData(m_chooser);
 
     // Alliance Color
@@ -49,6 +53,9 @@ public class Robot extends TimedRobot {
     else {
       SmartDashboard.putString("Alliance Color", "#666666");
     }
+
+    // Serve Elastic Config
+    WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
   }
 
   @Override
@@ -56,11 +63,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
 
+
+
     // Dashboard Diagnostics
     // SmartDashboard.putNumber("CAN Utilization %", RobotController.getCANStatus().percentBusUtilization * 100.0);
     // SmartDashboard.putNumber("CPU Temperature", RobotController.getCPUTemp());
     // SmartDashboard.putBoolean("RSL", RobotController.getRSLState());
-    SmartDashboard.putNumber("Speed", DriverStation.getStickAxis(0, ControllerConstantsLetters.leftJoystickYAxis));
+    SmartDashboard.putNumber("Speed", -DriverStation.getStickAxis(0, ControllerConstantsLetters.leftJoystickYAxis));
     SmartDashboard.putNumber("Turn", DriverStation.getStickAxis(0, ControllerConstantsLetters.rightJoystickXAxis));
     CommandScheduler.getInstance().run();
   }
@@ -87,12 +96,18 @@ public class Robot extends TimedRobot {
         m_autonomousCommand = m_robotContainer.simpleAuto();
         break;
       case kDefaultAuto:
-      default:
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         if (m_autonomousCommand != null) {
           m_autonomousCommand.schedule();
         }
         break;
+      case kNoAuto:
+        break;
+      default:
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        if (m_autonomousCommand != null) {
+          m_autonomousCommand.schedule();
+        }
     }
   }
 

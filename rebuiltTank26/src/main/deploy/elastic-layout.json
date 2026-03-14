@@ -3,13 +3,6 @@
   "grid_size": 128,
   "tabs": [
     {
-      "name": "Teleoperated",
-      "grid_layout": {
-        "layouts": [],
-        "containers": []
-      }
-    },
-    {
       "name": "Autonomous",
       "grid_layout": {
         "layouts": [
@@ -74,8 +67,8 @@
           },
           {
             "title": "Alliance Color",
-            "x": 128.0,
-            "y": 384.0,
+            "x": 0.0,
+            "y": 0.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Single Color View",
@@ -89,7 +82,7 @@
             "title": "Autonomous Chooser",
             "x": 128.0,
             "y": 0.0,
-            "width": 256.0,
+            "width": 384.0,
             "height": 128.0,
             "type": "Split Button Chooser",
             "properties": {
@@ -98,7 +91,7 @@
             }
           },
           {
-            "title": "FMSInfo",
+            "title": "FMS Info",
             "x": 512.0,
             "y": 384.0,
             "width": 384.0,
@@ -107,6 +100,64 @@
             "properties": {
               "topic": "/FMSInfo",
               "period": 0.06
+            }
+          },
+          {
+            "title": "Match Time",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 384.0,
+            "height": 256.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "/SmartDashboard/Match Time",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 20,
+              "yellow_start_time": 30
+            }
+          },
+          {
+            "title": "Speed",
+            "x": 0.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 384.0,
+            "type": "Radial Gauge",
+            "properties": {
+              "topic": "/SmartDashboard/Speed",
+              "period": 0.033,
+              "data_type": "double",
+              "start_angle": -140.0,
+              "end_angle": 140.0,
+              "min_value": -1.0,
+              "max_value": 1.0,
+              "number_of_labels": 8,
+              "wrap_value": false,
+              "show_pointer": true,
+              "show_ticks": true
+            }
+          },
+          {
+            "title": "Turn",
+            "x": 256.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 384.0,
+            "type": "Radial Gauge",
+            "properties": {
+              "topic": "/SmartDashboard/Turn",
+              "period": 0.06,
+              "data_type": "double",
+              "start_angle": -140.0,
+              "end_angle": 140.0,
+              "min_value": -1.0,
+              "max_value": 1.0,
+              "number_of_labels": 8,
+              "wrap_value": false,
+              "show_pointer": true,
+              "show_ticks": true
             }
           }
         ]
