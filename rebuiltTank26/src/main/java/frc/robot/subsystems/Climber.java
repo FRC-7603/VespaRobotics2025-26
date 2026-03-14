@@ -17,7 +17,6 @@ public class Climber implements Subsystem {
     private final SparkMax m_climberMotor;
 
 
-    // constructor
     public Climber(){
         m_climberMotor = new SparkMax(ClimberConstants.ClimberMotorID, MotorType.kBrushless); 
     }
@@ -25,10 +24,12 @@ public class Climber implements Subsystem {
 
     // methods
     public void speedUp(){
-        m_climberMotor.set(ClimberConstants.ClimberSpeedUp);
+        //m_climberMotor.set(ClimberConstants.ClimberSpeedUp);
+        m_climberMotor.setVoltage(20);
     }
     public void speedDown(){
-        m_climberMotor.set(ClimberConstants.ClimberSpeedDown);
+        //m_climberMotor.set(ClimberConstants.ClimberSpeedDown);
+        m_climberMotor.setVoltage(15);
     }
     public void Stop(){
     m_climberMotor.set(0);
