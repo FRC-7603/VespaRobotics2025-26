@@ -1,18 +1,17 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkLowLevel.MotorType;
+import edu.wpi.first.wpilibj.Timer;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.Constants.FuelConstants;
-import edu.wpi.first.wpilibj.Timer;
+
+import static frc.robot.Constants.FuelConstants;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import static frc.robot.Constants.FuelConstants;
-
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -42,6 +41,7 @@ public class FuelSubsystem implements Subsystem {
     }
 
     // methods
+    @SuppressWarnings("removal")
     public void setInvert(boolean status){
         if (status) {
                 m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
@@ -53,6 +53,7 @@ public class FuelSubsystem implements Subsystem {
         }
     }
 
+    @SuppressWarnings("removal")
     public void shoot(){
         m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_rightMotor.configure(m_config_normal, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
@@ -60,8 +61,9 @@ public class FuelSubsystem implements Subsystem {
         Timer.delay(0.2);
         m_rightMotor.setVoltage(22.0);
     }
-
-        public void autoShoot(){
+    
+    @SuppressWarnings("removal")
+    public void autoShoot(){
         m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_rightMotor.configure(m_config_normal, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_leftMotor.setVoltage(22.0);
@@ -84,6 +86,10 @@ public class FuelSubsystem implements Subsystem {
     public void Stop(){
         m_leftMotor.set(0);
         m_rightMotor.set(0);
+    }
+
+    protected void isFinished() {
+        Stop();
     }
     
     public void lebron() {
@@ -118,13 +124,6 @@ public class FuelSubsystem implements Subsystem {
         return runOnce(() -> {
             System.out.println("Shooting Command Ran");
             shoot();
-        });
-    }
-
-        public Command autoShootingCommand(){
-        return runOnce(() -> {
-            System.out.println("AUTO: Shooting Command Ran");
-            autoShoot();
         });
     }
     

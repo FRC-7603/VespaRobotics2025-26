@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 // import com.pathplanner.lib.auto.NamedCommands;
 // import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 // DS + logitech controller
 import edu.wpi.first.wpilibj.*;
@@ -24,10 +23,13 @@ import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.FuelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
+// Commands
+import frc.robot.commands.DriveCommand;
+import frc.robot.commands.FuelCommand;
+
 //XBOX
 import frc.robot.Constants.ControllerConstantsLetters;
 import frc.robot.Constants.XBOXControllerConstantsLetters;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
 public class RobotContainer {
@@ -61,7 +63,7 @@ public class RobotContainer {
     JoystickButton lbButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.LB);
     JoystickButton rbButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.RB);
     JoystickButton leftTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.left_triggerAxis);
-    JoystickButton rightTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.right_triggerAxis);
+    // JoystickButton rightTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.right_triggerAxis);
     
     //aButton.onTrue(climb.down)
     //aButton.onFalse(climb.down)
@@ -75,15 +77,15 @@ public class RobotContainer {
     bButton.whileTrue(m_fuel.lebron2().withTimeout(0.5).andThen(m_fuel.lebron1()).finallyDo(() -> m_fuel.stopCommand()));
     bButton.whileFalse(m_fuel.stopCommand());
 
-    //rbButton.onTrue(m_fuel.groundOuttakeCommand());
-    rbButton.onTrue(m_fuel.fireProjectileAutonomousCommand(m_visionSubsystem.getDistance(), 72));
-    rbButton.onFalse(m_fuel.stopCommand());
-
     lbButton.onTrue(m_fuel.groundIntakeCommand());
-    lbButton.onFalse(m_fuel.stopCommand());
+    lbButton.onFalse(m_fuel.stopCommand()); 
+
+    rbButton.onTrue(m_fuel.groundOuttakeCommand());
+    // rbButton.onTrue(m_fuel.fireProjectileAutonomousCommand(m_visionSubsystem.getDistance(), 72));
+    rbButton.onFalse(m_fuel.stopCommand());
     
     leftTrigger.onTrue(m_visionSubsystem.turnToTagTWOLEBRON(m_driveSubsystem));
-    //leftTrigger.onFalse(m_driveSubsystem.stop());
+    // leftTrigger.onFalse(Command.runOnce(() -> m_driveSubsystem.stop()));
 
   }
 
@@ -115,7 +117,7 @@ public class RobotContainer {
     bButton.whileTrue(m_fuel.lebron2().withTimeout(0.5).andThen(m_fuel.lebron1()).finallyDo(() -> m_fuel.stopCommand()));
     bButton.whileFalse(m_fuel.stopCommand());
     // Hold button to activate auto-lock
-    //bButton.onTrue(m_visionSubsystem.turnToTarget());
+    // bButton.onTrue(m_visionSubsystem.turnToTarget());
   }
   
   private void configureDefaultCommands() {
@@ -166,49 +168,60 @@ public class RobotContainer {
   }
 
     public Command simpleAuto() {
-    return Commands.sequence(
+      return Commands.sequence(
 
-        // Step 1: step back 1.5 meters (approx)
-        Commands.run(() -> m_driveSubsystem.driveArcade(-0.5, 0), m_driveSubsystem).withTimeout(1.2),
-        m_driveSubsystem.driveStopCommand(),
+          // Step 1: step back 1.5 meters (approx)
+          new DriveCommand(m_driveSubsystem, () -> 0, () -> 1.2),
 
-        // Step 2: shoot
-        m_fuel.autoShootingCommand(),
-        new WaitCommand(5),
+          // Step 2: shoot
+          Commands.runOnce(() -> SmartDashboard.putBoolean("Shooting", true)),
 
-        // Step 3: step forward
-        Commands.run(() -> m_driveSubsystem.driveArcade(0.5, 0), m_driveSubsystem).withTimeout(1.2),
-        m_driveSubsystem.driveStopCommand()
+          new FuelCommand(m_fuel, () -> 0, () -> 5),
 
-        // // Step 4: turn 30°
-        // Commands.run(() -> m_driveSubsystem.driveArcade(0, 0.4), m_driveSubsystem).withTimeout(0.5),
-        // m_driveSubsystem.driveStopCommand()
+          Commands.runOnce(() -> SmartDashboard.putBoolean("Shooting", false)),
+          
 
-        // // Step 5: go
-        // Commands.run(() -> m_driveSubsystem.driveArcade(0.6, 0), m_driveSubsystem).withTimeout(2),
-        // m_driveSubsystem.driveStopCommand(),
+          // Step 3: step forward
+          new DriveCommand(m_driveSubsystem, () -> 1, () -> 1.2)
+          
 
-        // // Step 6: turn
-        // Commands.run(() -> m_driveSubsystem.driveArcade(0, -0.4), m_driveSubsystem).withTimeout(0.7),
-        // m_driveSubsystem.driveStopCommand(),
+          // // Step 2: shoot
+          // // m_fuel.autoShootingCommand(),
+          // // new WaitCommand(5),
 
-        // // Step 7: go
-        // Commands.run(() -> m_driveSubsystem.driveArcade(0.6, 0), m_driveSubsystem).withTimeout(2),
-        // m_driveSubsystem.driveStopCommand(),
 
-        // // Step 8: intake
-        // m_fuel.groundIntakeCommand(),
-        // new WaitCommand(2),
-        // m_fuel.stopCommand(),
+          // new DriveCommand(m_driveSubsystem, () -> 1, () -> 1.2).withTimeout(1.2),
+          // new DriveCommand(m_driveSubsystem, () -> 2, () -> 1).withTimeout(1)
 
-        // // Step 9: turn 180
-        // Commands.run(() -> m_driveSubsystem.driveArcade(0, 0.6), m_driveSubsystem).withTimeout(2),
-        // m_driveSubsystem.driveStopCommand(),
+          // // Step 4: turn 30°
+          // Commands.run(() -> m_driveSubsystem.driveArcade(0, 0.4), m_driveSubsystem).withTimeout(0.5),
+          // m_driveSubsystem.driveStopCommand()
 
-        // // Step 10: go
-        // Commands.run(() -> m_driveSubsystem.driveArcade(0.6, 0), m_driveSubsystem).withTimeout(2),
-        // m_driveSubsystem.driveStopCommand()
-    );
+          // // Step 5: go
+          // Commands.run(() -> m_driveSubsystem.driveArcade(0.6, 0), m_driveSubsystem).withTimeout(2),
+          // m_driveSubsystem.driveStopCommand(),
+
+          // // Step 6: turn
+          // Commands.run(() -> m_driveSubsystem.driveArcade(0, -0.4), m_driveSubsystem).withTimeout(0.7),
+          // m_driveSubsystem.driveStopCommand(),
+
+          // // Step 7: go
+          // Commands.run(() -> m_driveSubsystem.driveArcade(0.6, 0), m_driveSubsystem).withTimeout(2),
+          // m_driveSubsystem.driveStopCommand(),
+
+          // // Step 8: intake
+          // m_fuel.groundIntakeCommand(),
+          // new WaitCommand(2),
+          // m_fuel.stopCommand(),
+
+          // // Step 9: turn 180
+          // Commands.run(() -> m_driveSubsystem.driveArcade(0, 0.6), m_driveSubsystem).withTimeout(2),
+          // m_driveSubsystem.driveStopCommand(),
+
+          // // Step 10: go
+          // Commands.run(() -> m_driveSubsystem.driveArcade(0.6, 0), m_driveSubsystem).withTimeout(2),
+          // m_driveSubsystem.driveStopCommand()
+      );
   }
 
 }

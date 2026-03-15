@@ -11,10 +11,8 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 
 import static frc.robot.Constants.DriveConstants.*;
 
@@ -29,6 +27,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // constructor
   public DriveSubsystem() {
+
     // create brushed motors for drive
     leftLeader = new SparkMax(LEFT_LEADER_ID, MotorType.kBrushed);
     leftFollower = new SparkMax(LEFT_FOLLOWER_ID, MotorType.kBrushed);
@@ -72,26 +71,13 @@ public class DriveSubsystem extends SubsystemBase {
     //leftLeader.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  @Override
-  public void periodic() {
-  }
-
-
   // methods
   public void driveArcade(double xSpeed, double zRotation) {
     drive.arcadeDrive(xSpeed, zRotation);
+    SmartDashboard.putNumber("Arcade speed", xSpeed);
   }
 
   public void stop() {
     drive.stopMotor();
-  }
-
-  public void tankDrive(double left, double right) {
-    drive.tankDrive(left, right);
-  }
-
-  // commands
-  public Command driveStopCommand() {
-    return run(() -> stop());
   }
 }
