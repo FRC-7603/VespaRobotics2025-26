@@ -33,8 +33,8 @@ public class FuelSubsystem implements Subsystem {
 
     // constructor
     public FuelSubsystem(){
-        m_leftMotor = new SparkMax(FuelConstants.LEFT_MOTOR_ID, MotorType.kBrushed);
-        m_rightMotor = new SparkMax(FuelConstants.RIGHT_MOTOR_ID, MotorType.kBrushed); 
+        m_leftMotor = new SparkMax(FuelConstants.LEFT_MOTOR_ID, MotorType.kBrushless);
+        m_rightMotor = new SparkMax(FuelConstants.RIGHT_MOTOR_ID, MotorType.kBrushless); 
         m_config_normal.inverted(false);
         m_config_inverted.inverted(true);
         m_leftEncoder = m_leftMotor.getEncoder();

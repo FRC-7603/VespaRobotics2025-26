@@ -33,7 +33,7 @@ public class DriveSubsystem extends SubsystemBase {
   // constructor
   public DriveSubsystem() {
 
-    // create brushed motors for drive
+    // create brushless motors for drive
     leftLeader = new SparkMax(LEFT_LEADER_ID, MotorType.kBrushless);
     leftFollower = new SparkMax(LEFT_FOLLOWER_ID, MotorType.kBrushless);
     rightLeader = new SparkMax(RIGHT_LEADER_ID, MotorType.kBrushless);
