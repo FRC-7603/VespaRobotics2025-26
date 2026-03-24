@@ -65,7 +65,7 @@ public class RobotContainer {
     JoystickButton leftTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.left_triggerAxis);
     JoystickButton rightTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.right_triggerAxis);
     
-    aButton.onTrue(m_fuel.supportBot());
+    aButton.onTrue(m_fuel.supportBotMacro());
     aButton.onFalse(m_fuel.stopCommand());
 
     //yButton.onTrue(climb.down)

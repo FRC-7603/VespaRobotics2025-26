@@ -14,6 +14,8 @@ public final class Constants {
     public static final int RIGHT_FOLLOWER_ID = 4;
 
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 50; //max 60
+
+    public static final int DRIVE_MOTOR_OVERHEAT_TEMPERATURE = 70; //degrees Celsius
   }
 
   public static final class FuelConstants {

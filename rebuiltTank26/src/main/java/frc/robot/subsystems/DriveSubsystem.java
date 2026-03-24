@@ -9,7 +9,9 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
+import edu.wpi.first.util.sendable.SendableRegistry;
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,18 +26,28 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final DifferentialDrive drive;
 
+  private final Alert m_motorTempNotFound = new Alert("Unable to read motor temperature! Using CIMs?", AlertType.kWarning);
+  private final Alert m_overheatAlert = new Alert("Motor is overheating!", AlertType.kWarning);
+
 
   // constructor
   public DriveSubsystem() {
 
     // create brushed motors for drive
-    leftLeader = new SparkMax(LEFT_LEADER_ID, MotorType.kBrushed);
-    leftFollower = new SparkMax(LEFT_FOLLOWER_ID, MotorType.kBrushed);
-    rightLeader = new SparkMax(RIGHT_LEADER_ID, MotorType.kBrushed);
-    rightFollower = new SparkMax(RIGHT_FOLLOWER_ID, MotorType.kBrushed);
+    leftLeader = new SparkMax(LEFT_LEADER_ID, MotorType.kBrushless);
+    leftFollower = new SparkMax(LEFT_FOLLOWER_ID, MotorType.kBrushless);
+    rightLeader = new SparkMax(RIGHT_LEADER_ID, MotorType.kBrushless);
+    rightFollower = new SparkMax(RIGHT_FOLLOWER_ID, MotorType.kBrushless);
 
     // set up differential drive class
     drive = new DifferentialDrive(leftLeader, rightLeader);
+
+    SendableRegistry.addChild(drive, leftLeader);
+    SendableRegistry.addChild(drive, leftFollower);
+    SendableRegistry.addChild(drive, rightLeader);
+    SendableRegistry.addChild(drive, rightFollower);
+    SendableRegistry.setName(drive, "Differential Drive");
+    SmartDashboard.putData(drive);
 
     // Set can timeout. Because this project only sets parameters once on
     // construction, the timeout can be long without blocking robot operation. Code
@@ -80,4 +92,26 @@ public class DriveSubsystem extends SubsystemBase {
   public void stop() {
     drive.stopMotor();
   }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    m_overheatAlert.set(
+      // Check either 4 motors for overheating. If any are above the threshold, trigger the alert
+      leftLeader.getMotorTemperature() > DRIVE_MOTOR_OVERHEAT_TEMPERATURE || 
+      rightLeader.getMotorTemperature() > DRIVE_MOTOR_OVERHEAT_TEMPERATURE || 
+      leftFollower.getMotorTemperature() > DRIVE_MOTOR_OVERHEAT_TEMPERATURE || 
+      rightFollower.getMotorTemperature() > DRIVE_MOTOR_OVERHEAT_TEMPERATURE
+    );
+
+    m_motorTempNotFound.set(
+      // Check if any of the motors are reporting a temperature of 0, which is likely an error (CIMs don't report temp)
+      leftLeader.getMotorTemperature() < 2 || 
+      rightLeader.getMotorTemperature() < 2 || 
+      leftFollower.getMotorTemperature() < 2 || 
+      rightFollower.getMotorTemperature() < 2
+      );
+  }
+
+
 }

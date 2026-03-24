@@ -151,7 +151,7 @@ public class FuelSubsystem implements Subsystem {
         return this.run(() -> lebronTWO());
     }
 
-    public Command supportBot() {
+    public Command supportBotMacro() {
         return this.run(() -> mid());
     }
 
