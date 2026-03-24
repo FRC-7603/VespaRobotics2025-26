@@ -2,121 +2,72 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
-//import edu.wpi.first.wpilibj2.command.RunCommand;
-
-import frc.robot.subsystems.DriveSubsystem;
-import org.photonvision.targeting.PhotonPipelineResult;
+//import frc.robot.subsystems.DriveSubsystem;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.PhotonUtils;
 
 public class VisionSubsystem extends SubsystemBase {
 
     private final PhotonCamera camera;
-    private Integer lockedTagID = 7;
 
     // Cache the latest result each loop
     private PhotonPipelineResult latestResult = new PhotonPipelineResult();
-    
+
     public VisionSubsystem() {
         camera = new PhotonCamera("cam");
     }
 
     @Override
     public void periodic() {
-        var unread = camera.getAllUnreadResults();
+        // call getAllUnreadResults exactly once per loop
+        var unread = camera.getAllUnreadResults(); //
         if (!unread.isEmpty()) {
-            latestResult = unread.get(unread.size() - 1); // grab newest frame
+            latestResult = unread.get(unread.size() - 1); // newest frame
         }
     }
 
-    public void resetLockedTag() {
-        lockedTagID = null;
-    }
-
-    public void setTargetTag(int id) {
-        lockedTagID = id;
-        //ex vision.setTargetTag(7);
-    }
-
+    // True if the latest cached result has any targets.
     public boolean hasTarget() {
-        //return camera.getLatestResult().hasTargets();
         return latestResult.hasTargets();
     }
 
-    // public int getID() {
-    //     PhotonTrackedTarget target = getBestTarget();
-    //     return target.getFiducialId();
-    // }
-
+    // Best target from the latest cached result, or null if none.
     public PhotonTrackedTarget getBestTarget() {
         if (!hasTarget()) return null;
-        return camera.getLatestResult().getBestTarget();
+        return latestResult.getBestTarget();
     }
 
-    public PhotonTrackedTarget getLockedTarget() {
-        if (!latestResult.hasTargets()) return null;
-
-        if (lockedTagID != null) {
-            for (PhotonTrackedTarget tag : latestResult.getTargets()) {
-                if (tag.getFiducialId() == lockedTagID) {
-                    return tag;
-                }
-            }
-            return null; // locked tag not visible
-        }
-
-        // Lock onto best visible tag
-        PhotonTrackedTarget best = latestResult.getBestTarget();
-        lockedTagID = best.getFiducialId();
-        return best;
+    private PhotonTrackedTarget getLockedTarget() {
+        return getBestTarget();
     }
 
     public double getYaw() {
         PhotonTrackedTarget target = getLockedTarget();
-        if (target == null) return 0;
-        return target.getYaw();
+        if (target == null) return 0.0;
+        return target.getYaw(); // degrees, left positive
     }
 
     public double getDistance() {
         PhotonTrackedTarget target = getLockedTarget();
-        if (target == null) return 0;
+        if (target == null) return 0.0;
 
-        final double cameraHeight = 0.5;
-        final double targetHeight = 1.5;
-        final double cameraPitch  = Math.toRadians(20);
-        double targetPitch  = Math.toRadians(target.getPitch());
+        // replace with real constants (meters, radians)
+        final double cameraHeight = 0.5;      // meters
+        final double targetHeight = 1.5;      // meters
+        final double cameraPitch  = Math.toRadians(20.0); // radians
+
+        double targetPitch = Math.toRadians(target.getPitch()); // degrees -> radians
 
         return PhotonUtils.calculateDistanceToTargetMeters(
-            cameraHeight, targetHeight, cameraPitch, targetPitch);
+                cameraHeight, targetHeight, cameraPitch, targetPitch); // [web:4]
     }
 
-    public Command holdDistance(DriveSubsystem drive) {
-        return run(() -> {
-            PhotonTrackedTarget target = getLockedTarget();
-            if (target == null) { drive.stop(); return; }
-
-            double turn = -target.getYaw() * 0.02;
-            double forward = (getDistance() - 1.5) * 0.6;
-            drive.driveArcade(forward, turn);
-        });
-    }
-
-    public Command turnToTarget(DriveSubsystem drive) {
-        return run(() -> {
-            PhotonTrackedTarget target = getLockedTarget();
-            if (target == null) { drive.stop(); return; }
-            drive.driveArcade(0, -target.getYaw() * 0.02);
-        }).until(() -> {
-            PhotonTrackedTarget target = getLockedTarget();
-            return target != null && Math.abs(target.getYaw()) < 1.5;
-        });
-    }
-
+    // probably too twitchy, but compiles
     public Command driveToTag(DriveSubsystem drive, double targetDistanceMeters) {
         return run(() -> {
-
             PhotonTrackedTarget target = getLockedTarget();
 
             if (target == null) {
@@ -128,86 +79,70 @@ public class VisionSubsystem extends SubsystemBase {
             double yaw = target.getYaw();
             double distance = getDistance();
 
-            // Turn control (Y alignment)
-            double turn = yaw * 4;
+            double turn = yaw * 4.0;
+            double forward = (distance - targetDistanceMeters) * 4.0;
 
-            // Forward control (X distance)
-            double forward = (distance - targetDistanceMeters) * 4;
-
-            
             drive.driveArcade(forward, turn);
             System.out.println("turn:" + turn);
             System.out.println("forward:" + forward);
-
         }).until(() -> {
             PhotonTrackedTarget target = getLockedTarget();
             if (target == null) return false;
-            System.out.println("also null target");
 
             return Math.abs(getDistance() - targetDistanceMeters) < 0.1
-                && Math.abs(target.getYaw()) < 1;
-        });
+                    && Math.abs(target.getYaw()) < 1.0;
+        }).finallyDo(interrupted -> drive.stop());
     }
 
     public Command driveToTagLEBRON(DriveSubsystem drive, double targetDistanceMeters) {
+        return run(() -> {
+            PhotonTrackedTarget target = getLockedTarget();
 
-    return run(() -> {
+            if (target == null) {
+                drive.stop();
+                System.out.println("No target detected");
+                return;
+            }
 
-        PhotonTrackedTarget target = getLockedTarget();
+            double yaw = target.getYaw();        // left/right angle
+            double distance = getDistance();     // meters
 
-        if (target == null) {
-            // No tag detected — stop but keep trying next loop
-            drive.stop();
-            System.out.println("No target detected");
-            return;
-        }
+            double yawError = yaw;
+            double distanceError = distance - targetDistanceMeters;
 
-        double yaw = target.getYaw();        // left/right angle
-        double distance = getDistance();     // distance from tag
+            // Tunable gains
+            double kTurn = 0.02;
+            double kForward = 0.6;
 
-        // Calculate errors
-        double yawError = yaw;
-        double distanceError = distance - targetDistanceMeters;
+            double turn = yawError * kTurn;
+            double forward = distanceError * kForward;
 
-        // Control gains (tune these)
-        double turn = yawError * 0.02;
-        double forward = distanceError * 0.6;
+            // Clamp speeds
+            turn = Math.max(-0.4, Math.min(0.4, turn));
+            forward = Math.max(-0.5, Math.min(0.5, forward));
 
-        // Clamp speeds so robot moves smoothly
-        turn = Math.max(-0.4, Math.min(0.4, turn));
-        forward = Math.max(-0.5, Math.min(0.5, forward));
+            drive.driveArcade(forward, turn);
 
-        drive.driveArcade(forward, turn);
+            System.out.println("Distance: " + distance);
+            System.out.println("Yaw: " + yaw);
+            System.out.println("Forward: " + forward);
+            System.out.println("Turn: " + turn);
+        })
+        .until(() -> {
+            PhotonTrackedTarget target = getLockedTarget();
+            if (target == null) return false;
 
-        // Debug prints
-        System.out.println("Distance: " + distance);
-        System.out.println("Yaw: " + yaw);
-        System.out.println("Forward: " + forward);
-        System.out.println("Turn: " + turn);
+            double distanceError = Math.abs(getDistance() - targetDistanceMeters);
+            double yawError = Math.abs(target.getYaw());
 
-    })
-
-    // Stop when close enough
-    .until(() -> {
-
-        PhotonTrackedTarget target = getLockedTarget();
-        if (target == null) return false;
-
-        double distanceError = Math.abs(getDistance() - targetDistanceMeters);
-        double yawError = Math.abs(target.getYaw());
-
-        return distanceError < 0.35 && yawError < 5;
-
-    })
-
-    // Stop robot when command ends
-    .finallyDo((interrupted) -> drive.stop());
+            return distanceError < 0.35 && yawError < 5.0;
+        })
+        .finallyDo(interrupted -> drive.stop());
     }
+
     // Turn robot until tag is centered
     public Command turnToTagTWOLEBRON(DriveSubsystem drive) {
-
         return run(() -> {
-
             PhotonTrackedTarget target = getLockedTarget();
 
             if (target == null) {
@@ -223,23 +158,19 @@ public class VisionSubsystem extends SubsystemBase {
             // Clamp turn speed
             turn = Math.max(-0.4, Math.min(0.4, turn));
 
-            drive.driveArcade(0, turn);
+            drive.driveArcade(0.0, turn);
 
             System.out.println("Yaw: " + yawError);
-
         })
-
         .until(() -> {
             PhotonTrackedTarget target = getLockedTarget();
             return target != null && Math.abs(target.getYaw()) < 1.5;
         })
-
-        .finallyDo((interrupted) -> drive.stop());
+        .finallyDo(interrupted -> drive.stop());
     }
+
     public Command driveToTagTWOLEBRON(DriveSubsystem drive, double targetDistanceMeters) {
-
         return run(() -> {
-
             PhotonTrackedTarget target = getLockedTarget();
 
             if (target == null) {
@@ -268,22 +199,16 @@ public class VisionSubsystem extends SubsystemBase {
 
             System.out.println("Distance: " + distance);
             System.out.println("Yaw: " + yaw);
-
         })
-
         .until(() -> {
-
             PhotonTrackedTarget target = getLockedTarget();
             if (target == null) return false;
 
             double distanceError = Math.abs(getDistance() - targetDistanceMeters);
             double yawError = Math.abs(target.getYaw());
 
-            return distanceError < 0.15 && yawError < 2;
-
+            return distanceError < 0.15 && yawError < 2.0;
         })
-
-        .finallyDo((interrupted) -> drive.stop());
+        .finallyDo(interrupted -> drive.stop());
     }
-
 }

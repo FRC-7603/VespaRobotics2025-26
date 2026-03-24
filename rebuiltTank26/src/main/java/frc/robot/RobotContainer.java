@@ -47,7 +47,7 @@ public class RobotContainer {
   // constructor
   public RobotContainer() {
   
-    configureBindings();       // Logitech
+    //configureBindings();       // Logitech
     configureBindingsXBOX();   // Xbox
     configureDefaultCommands();
     System.out.println("Robot started.");
@@ -56,17 +56,17 @@ public class RobotContainer {
 
   private void configureBindingsXBOX() {
 
-    //JoystickButton aButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.A);
+    JoystickButton aButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.A);
     //JoystickButton yButton = new JoystickButton(xboxController, ControllerConstantsLetters.Y);
     JoystickButton bButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.B);
     JoystickButton xButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.X);
     JoystickButton lbButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.LB);
     JoystickButton rbButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.RB);
     JoystickButton leftTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.left_triggerAxis);
-    // JoystickButton rightTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.right_triggerAxis);
+    JoystickButton rightTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.right_triggerAxis);
     
-    //aButton.onTrue(climb.down)
-    //aButton.onFalse(climb.down)
+    aButton.onTrue(m_fuel.supportBot());
+    aButton.onFalse(m_fuel.stopCommand());
 
     //yButton.onTrue(climb.down)
     //yButton.onFalse(climb.down)
@@ -81,11 +81,13 @@ public class RobotContainer {
     lbButton.onFalse(m_fuel.stopCommand()); 
 
     rbButton.onTrue(m_fuel.groundOuttakeCommand());
-    // rbButton.onTrue(m_fuel.fireProjectileAutonomousCommand(m_visionSubsystem.getDistance(), 72));
     rbButton.onFalse(m_fuel.stopCommand());
     
-    leftTrigger.onTrue(m_visionSubsystem.turnToTagTWOLEBRON(m_driveSubsystem));
+    //leftTrigger.onTrue(m_visionSubsystem.turnToTagTWOLEBRON(m_driveSubsystem));
     // leftTrigger.onFalse(Command.runOnce(() -> m_driveSubsystem.stop()));
+
+    rightTrigger.onTrue(m_fuel.fireProjectileAutonomousCommand(m_visionSubsystem.getDistance(), 72));
+    rightTrigger.onFalse(m_fuel.stopCommand());
 
   }
 
@@ -157,8 +159,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
      System.out.println("AUTO START");
-
-      m_visionSubsystem.setTargetTag(7);
 
       //return m_visionSubsystem.driveToTagLEBRON(m_driveSubsystem, 1.5);
       return m_visionSubsystem.turnToTagTWOLEBRON(m_driveSubsystem).andThen(m_visionSubsystem.driveToTagTWOLEBRON(m_driveSubsystem, 1.5));

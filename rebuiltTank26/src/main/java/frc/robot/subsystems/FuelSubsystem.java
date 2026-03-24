@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Timer;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants.FuelConstants;
 
 import static frc.robot.Constants.FuelConstants;
 
@@ -104,6 +105,15 @@ public class FuelSubsystem implements Subsystem {
         m_leftMotor.setVoltage(11);
         m_rightMotor.setVoltage(12.6);
     }
+
+    public void mid() {
+        //this is for Being a mid-bot and taking fuel and immediately shooting to your side 
+        m_leftMotor.setVoltage(20);
+
+        //m_rightMotor.setInverted(true);
+        //m_rightMotor.setVoltage(8);
+        m_rightMotor.setVoltage(-8);
+    }
     
     // commands
     public Command groundIntakeCommand(){
@@ -139,6 +149,10 @@ public class FuelSubsystem implements Subsystem {
     }
     public Command lebron2(){
         return this.run(() -> lebronTWO());
+    }
+
+    public Command supportBot() {
+        return this.run(() -> mid());
     }
 
     public Command fireProjectileAutonomousCommand(double range, double heightTarget){
