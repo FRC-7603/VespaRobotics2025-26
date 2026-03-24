@@ -68,9 +68,6 @@ public class RobotContainer {
     aButton.onTrue(m_fuel.supportBotMacro());
     aButton.onFalse(m_fuel.stopCommand());
 
-    //yButton.onTrue(climb.down)
-    //yButton.onFalse(climb.down)
-
     xButton.onTrue(m_fuel.shootingCommand());
     xButton.onFalse(m_fuel.stopCommand());
 
@@ -82,9 +79,12 @@ public class RobotContainer {
 
     rbButton.onTrue(m_fuel.groundOuttakeCommand());
     rbButton.onFalse(m_fuel.stopCommand());
-    
-    //leftTrigger.onTrue(m_visionSubsystem.turnToTagTWOLEBRON(m_driveSubsystem));
-    // leftTrigger.onFalse(Command.runOnce(() -> m_driveSubsystem.stop()));
+
+    //yButton.onTrue(m_visionSubsystem.turnToTagTWOLEBRON(m_driveSubsystem));
+    //yButton.onFalse(Command.runOnce(() -> m_driveSubsystem.stop()));
+
+    //yButton.onTrue(m_visionSubsystem.driveToTagTWOLEBRON(m_driveSubsystem));
+    //yButton.onFalse(Command.runOnce(() -> m_driveSubsystem.stop()));
 
     rightTrigger.onTrue(m_fuel.fireProjectileAutonomousCommand(m_visionSubsystem.getDistance(), 72));
     rightTrigger.onFalse(m_fuel.stopCommand());
