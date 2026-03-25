@@ -39,7 +39,7 @@ public class RobotContainer {
   // public final Climber m_climber = new Climber();
   public final FuelSubsystem m_fuel = new FuelSubsystem();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-  public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+  // public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
 
   // The operator's controller
   // private final Joystick operatorController = new Joystick(OPERATOR_CONTROLLER_PORT);
@@ -86,8 +86,8 @@ public class RobotContainer {
     //yButton.onTrue(m_visionSubsystem.driveToTagTWOLEBRON(m_driveSubsystem));
     //yButton.onFalse(Command.runOnce(() -> m_driveSubsystem.stop()));
 
-    rightTrigger.onTrue(m_fuel.fireProjectileAutonomousCommand(m_visionSubsystem.getDistance(), 72));
-    rightTrigger.onFalse(m_fuel.stopCommand());
+    // rightTrigger.onTrue(m_fuel.fireProjectileAutonomousCommand(m_visionSubsystem.getDistance(), 72));
+    // rightTrigger.onFalse(m_fuel.stopCommand());
 
   }
 
@@ -158,12 +158,12 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
 
-     System.out.println("AUTO START");
+    //  System.out.println("AUTO START");
 
       //return m_visionSubsystem.driveToTagLEBRON(m_driveSubsystem, 1.5);
-      return m_visionSubsystem.turnToTagTWOLEBRON(m_driveSubsystem).andThen(m_visionSubsystem.driveToTagTWOLEBRON(m_driveSubsystem, 1.5));
+      // return m_visionSubsystem.turnToTagTWOLEBRON(m_driveSubsystem).andThen(m_visionSubsystem.driveToTagTWOLEBRON(m_driveSubsystem, 1.5));
 
-      //return simpleAuto();
+      return simpleAuto();
 
   }
 

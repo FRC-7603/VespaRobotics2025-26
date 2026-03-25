@@ -35,8 +35,10 @@ public class FuelSubsystem implements Subsystem {
     public FuelSubsystem(){
         m_leftMotor = new SparkMax(FuelConstants.LEFT_MOTOR_ID, MotorType.kBrushless);
         m_rightMotor = new SparkMax(FuelConstants.RIGHT_MOTOR_ID, MotorType.kBrushless); 
-        m_config_normal.inverted(false);
-        m_config_inverted.inverted(true);
+        m_config_normal.inverted(false)
+                       .smartCurrentLimit(FuelConstants.FUEL_MOTOR_CURRENT_LIMIT);
+        m_config_inverted.inverted(true)
+                         .smartCurrentLimit(FuelConstants.FUEL_MOTOR_CURRENT_LIMIT);
         m_leftEncoder = m_leftMotor.getEncoder();
         m_leftPID = m_leftMotor.getClosedLoopController();
     }
@@ -106,13 +108,12 @@ public class FuelSubsystem implements Subsystem {
         m_rightMotor.setVoltage(12.6);
     }
 
+    @SuppressWarnings("removal")
     public void mid() {
         //this is for Being a mid-bot and taking fuel and immediately shooting to your side 
+        m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_leftMotor.setVoltage(20);
-
-        //m_rightMotor.setInverted(true);
-        //m_rightMotor.setVoltage(8);
-        m_rightMotor.setVoltage(-8);
+        m_rightMotor.setVoltage(8);
     }
     
     // commands
