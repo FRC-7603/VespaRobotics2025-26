@@ -4,18 +4,18 @@ import edu.wpi.first.wpilibj.Timer;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.Constants.FuelConstants;
-
-import static frc.robot.Constants.FuelConstants;
 
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
+
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
+import com.revrobotics.RelativeEncoder;
+
+import static frc.robot.Constants.FuelConstants;
 
 public class FuelSubsystem implements Subsystem {
     public static FuelSubsystem singleInst;
@@ -44,7 +44,6 @@ public class FuelSubsystem implements Subsystem {
     }
 
     // methods
-    @SuppressWarnings("removal")
     public void setInvert(boolean status){
         if (status) {
                 m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
@@ -56,7 +55,6 @@ public class FuelSubsystem implements Subsystem {
         }
     }
 
-    @SuppressWarnings("removal")
     public void shoot(){
         m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_rightMotor.configure(m_config_normal, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
@@ -65,7 +63,6 @@ public class FuelSubsystem implements Subsystem {
         m_rightMotor.setVoltage(22.0);
     }
     
-    @SuppressWarnings("removal")
     public void autoShoot(){
         m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_rightMotor.configure(m_config_normal, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
@@ -108,7 +105,6 @@ public class FuelSubsystem implements Subsystem {
         m_rightMotor.setVoltage(12.6);
     }
 
-    @SuppressWarnings("removal")
     public void mid() {
         //this is for Being a mid-bot and taking fuel and immediately shooting to your side 
         m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);

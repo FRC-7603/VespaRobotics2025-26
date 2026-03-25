@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-//import com.revrobotics.spark.SparkBase.PersistMode;
-//import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
@@ -103,10 +101,10 @@ public class DriveSubsystem extends SubsystemBase {
                       .inverted(true)
                       .follow(RIGHT_LEADER_ID);
 
-    leftLeader.configure(leftLeaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-    leftFollower.configure(leftFollowerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-    rightLeader.configure(rightLeaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-    rightFollower.configure(rightFollowerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    leftLeader.configure(leftLeaderConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+    leftFollower.configure(leftFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+    rightLeader.configure(rightLeaderConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+    rightFollower.configure(rightFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
     // Remove following, then apply config to right leader
     //rightLeader.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
