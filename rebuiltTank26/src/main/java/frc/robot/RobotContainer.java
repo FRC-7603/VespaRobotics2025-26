@@ -14,20 +14,18 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-// import static frc.robot.Constants.OperatorConstants.*;
 // import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 // Subsystems
-import frc.robot.subsystems.VisionSubsystem;
-// import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.FuelSubsystem;
+// import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FuelSubsystem;
 
 // Commands
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.FuelCommand;
 
-//XBOX
+// Controllers
 import frc.robot.Constants.ControllerConstantsLetters;
 import frc.robot.Constants.XBOXControllerConstantsLetters;
 
@@ -47,7 +45,7 @@ public class RobotContainer {
   // constructor
   public RobotContainer() {
   
-    //configureBindings();       // Logitech
+    //configureBindings();     // Logitech
     configureBindingsXBOX();   // Xbox
     configureDefaultCommands();
     System.out.println("Robot started.");
@@ -62,8 +60,8 @@ public class RobotContainer {
     JoystickButton xButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.X);
     JoystickButton lbButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.LB);
     JoystickButton rbButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.RB);
-    JoystickButton leftTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.left_triggerAxis);
-    JoystickButton rightTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.right_triggerAxis);
+    // JoystickButton leftTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.left_triggerAxis);
+    // JoystickButton rightTrigger = new JoystickButton(xboxController, XBOXControllerConstantsLetters.right_triggerAxis);
     
     aButton.onTrue(m_fuel.supportBotMacro());
     aButton.onFalse(m_fuel.stopCommand());
@@ -148,7 +146,6 @@ public class RobotContainer {
     // m_climber.setDefaultCommand(
       // Commands.run(() -> m_climber.ClimberStopCommand(), m_climber)
     // );
-
 
     // Intake Subsystem
     m_fuel.setDefaultCommand(
