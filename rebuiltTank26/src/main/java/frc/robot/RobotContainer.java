@@ -129,7 +129,7 @@ public class RobotContainer {
       Commands.run(
             () -> {
                 double forward = -stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis)*0.7;
-                double turn    = stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis)*0.7;
+                double turn    = stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis)*0.5;
 
                 // If Xbox Controller is being used, override
                 if (Math.abs(xboxController.getRawAxis(XBOXControllerConstantsLetters.leftJoystickYAxis)) > 0.1 ||
