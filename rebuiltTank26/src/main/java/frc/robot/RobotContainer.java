@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 // import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 // Subsystems
-// import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FuelSubsystem;
 
@@ -37,7 +37,7 @@ public class RobotContainer {
   // public final Climber m_climber = new Climber();
   public final FuelSubsystem m_fuel = new FuelSubsystem();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-  // public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+  public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
 
   // The operator's controller
   // private final Joystick operatorController = new Joystick(OPERATOR_CONTROLLER_PORT);
@@ -55,7 +55,7 @@ public class RobotContainer {
   private void configureBindingsXBOX() {
 
     JoystickButton aButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.A);
-    //JoystickButton yButton = new JoystickButton(xboxController, ControllerConstantsLetters.Y);
+    JoystickButton yButton = new JoystickButton(xboxController, ControllerConstantsLetters.Y);
     JoystickButton bButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.B);
     JoystickButton xButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.X);
     JoystickButton lbButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.LB);
@@ -81,8 +81,14 @@ public class RobotContainer {
     //yButton.onTrue(m_visionSubsystem.turnToTagTWOLEBRON(m_driveSubsystem));
     //yButton.onFalse(Command.runOnce(() -> m_driveSubsystem.stop()));
 
-    //yButton.onTrue(m_visionSubsystem.driveToTagTWOLEBRON(m_driveSubsystem));
+    //yButton.onTrue(m_visionSubsystem.driveToTagTWOLEBRON(m_driveSubsystem, 1.5));
+    yButton.onTrue(
+    m_visionSubsystem
+        .driveToTagTWOLEBRON(m_driveSubsystem, 1.5)
+        .andThen(() -> m_driveSubsystem.stop())
+    );
     //yButton.onFalse(Command.runOnce(() -> m_driveSubsystem.stop()));
+    //yButton.onFalse(m_driveSubsystem.stop());
 
     // rightTrigger.onTrue(m_fuel.fireProjectileAutonomousCommand(m_visionSubsystem.getDistance(), 72));
     // rightTrigger.onFalse(m_fuel.stopCommand());
@@ -136,7 +142,7 @@ public class RobotContainer {
                     turn    = -xboxController.getRawAxis(XBOXControllerConstantsLetters.rightJoystickXAxis);
                 }
 
-                m_driveSubsystem.driveArcade(forward, turn);
+                m_driveSubsystem.driveArcade(forward, -turn);
             },
             m_driveSubsystem
         )
@@ -221,4 +227,36 @@ public class RobotContainer {
       );
   }
 
+  public Command simpleRIGHTAuto() {
+    return Commands.sequence(
+
+        // Step back
+        new DriveCommand(m_driveSubsystem, () -> 0, () -> 1.2)
+            .withTimeout(1.5),
+
+        // Stop after moving
+        Commands.runOnce(() -> m_driveSubsystem.stop()),
+
+        // Shoot
+        new FuelCommand(m_fuel, () -> 0, () -> 5)
+            .withTimeout(2),
+
+        Commands.runOnce(() -> m_fuel.stopCommand()),
+
+        // Turn ~30 degrees
+        Commands.run(
+            () -> m_driveSubsystem.driveArcade(0, 0.4),
+            m_driveSubsystem
+        ).withTimeout(0.5),
+
+        Commands.runOnce(() -> m_driveSubsystem.stop()),
+
+        // Drive to AprilTag
+        m_visionSubsystem
+            .driveToTagTWOLEBRON(m_driveSubsystem, 1.5)
+            .withTimeout(2.5),
+
+        Commands.runOnce(() -> m_driveSubsystem.stop())
+    );
+}
 }

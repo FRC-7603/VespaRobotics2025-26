@@ -185,8 +185,8 @@ public class VisionSubsystem extends SubsystemBase {
             double yawError = yaw;
             double distanceError = distance - targetDistanceMeters;
 
-            double kTurn = 0.02;
-            double kForward = 0.6;
+            double kTurn = -0.02;
+            double kForward = -0.6;
 
             double turn = yawError * kTurn;
             double forward = distanceError * kForward;
@@ -210,5 +210,11 @@ public class VisionSubsystem extends SubsystemBase {
             return distanceError < 0.15 && yawError < 2.0;
         })
         .finallyDo(interrupted -> drive.stop());
+    }
+
+    public void autoSTOPCommand(DriveSubsystem drive) {
+        
+        drive.stop();
+        return; 
     }
 }
