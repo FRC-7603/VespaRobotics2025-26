@@ -41,6 +41,28 @@ public final class Constants {
 
     public static final double fuelInSpeed = -0.4;
     public static final double fuelOutSpeed =0.4;
+
+
+    // Target RPM the shooter wheel must reach before the feeder fires.
+    // Since the bar/rollers are on the same shaft as the shooter motor,
+    // the wheel MUST be at full speed before the feeder pushes the ball
+    // into the bar — otherwise the ball hits the rails with too little
+    // wheel energy and jams.
+    public static final double SHOOTER_TARGET_RPM = 4500.0;
+
+    // How close (in %) the shooter must be to the target before feeding.
+    public static final double SHOOTER_RPM_TOLERANCE_PERCENT = 5.0;
+
+    // Voltage applied to the shooter (left) motor while spooling up.
+    // This motor also drives the bar with rollers that lifts the ball
+    // into the rail path.
+    public static final double SHOOTER_SPOOL_VOLTAGE = 20.0;
+
+    // Voltage applied to the feeder (right) motor to push the ball
+    // out of storage and into the bar/rollers.
+    // Keep this moderate so the ball is eased into the spinning
+    // bar rather than slammed — reduces rail compression jams.
+    public static final double FEEDER_FIRE_VOLTAGE = 12.0;
   }
 
   public static final class ShooterConstants {

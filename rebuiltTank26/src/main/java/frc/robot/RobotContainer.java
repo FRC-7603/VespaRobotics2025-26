@@ -66,7 +66,7 @@ public class RobotContainer {
     aButton.onTrue(m_fuel.supportBotMacro());
     aButton.onFalse(m_fuel.stopCommand());
 
-    xButton.onTrue(m_fuel.shootingCommand());
+    xButton.whileTrue(m_fuel.shootWhenReadyCommand());
     xButton.onFalse(m_fuel.stopCommand());
 
     bButton.whileTrue(m_fuel.lebron2().withTimeout(0.5).andThen(m_fuel.lebron1()).finallyDo(() -> m_fuel.stopCommand()));
@@ -109,7 +109,7 @@ public class RobotContainer {
 
     lbButton.onTrue(m_fuel.groundIntakeCommand());
     rbButton.onTrue(m_fuel.groundOuttakeCommand());
-    xButton.onTrue(m_fuel.shootingCommand());
+    xButton.whileTrue(m_fuel.shootWhenReadyCommand());
     lbButton.onFalse(m_fuel.stopCommand());
     rbButton.onFalse(m_fuel.stopCommand());
     xButton.onFalse(m_fuel.stopCommand());
