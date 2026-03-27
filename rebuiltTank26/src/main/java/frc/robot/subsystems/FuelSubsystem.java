@@ -10,11 +10,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkBase.ControlType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.RelativeEncoder;
@@ -28,50 +24,39 @@ public class FuelSubsystem implements Subsystem {
         return singleInst;
     }
 
+    private final SparkMax m_leftMotor;
     private final SparkMax m_rightMotor;
-    private final TalonFX m_leftMotor;
     private final SparkMaxConfig m_config_normal = new SparkMaxConfig();
     private final SparkMaxConfig m_config_inverted = new SparkMaxConfig();
-    private final TalonFXConfiguration m_talon_config_normal = new TalonFXConfiguration();
-    private final TalonFXConfiguration m_talon_config_inverted = new TalonFXConfiguration();
+    private final RelativeEncoder m_leftEncoder;
+    private final SparkClosedLoopController m_leftPID;
 
     // constructor
     public FuelSubsystem(){
-        m_leftMotor = new TalonFX(FuelConstants.LEFT_MOTOR_ID);
+        m_leftMotor = new SparkMax(FuelConstants.LEFT_MOTOR_ID, MotorType.kBrushless);
         m_rightMotor = new SparkMax(FuelConstants.RIGHT_MOTOR_ID, MotorType.kBrushless); 
-        
-        m_talon_config_normal.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        m_talon_config_normal.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        m_talon_config_normal.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = 0.1;
-
-        m_talon_config_inverted.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        m_talon_config_inverted.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-        m_talon_config_inverted.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = 0.1;
-
-        m_leftMotor.setSafetyEnabled(true);
-
         m_config_normal.inverted(false)
                        .smartCurrentLimit(FuelConstants.FUEL_MOTOR_CURRENT_LIMIT);
         m_config_inverted.inverted(true)
                          .smartCurrentLimit(FuelConstants.FUEL_MOTOR_CURRENT_LIMIT);
-
-        
+        m_leftEncoder = m_leftMotor.getEncoder();
+        m_leftPID = m_leftMotor.getClosedLoopController();
     }
 
     // methods
     public void setInvert(boolean status){
         if (status) {
-                m_leftMotor.getConfigurator().apply(m_talon_config_inverted);
+                m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
                 m_rightMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         } else {
-                m_leftMotor.getConfigurator().apply(m_talon_config_normal);
+                m_leftMotor.configure(m_config_normal, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
                 m_rightMotor.configure(m_config_normal, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
         }
     }
 
     public void shoot(){
-        m_leftMotor.getConfigurator().apply(m_talon_config_inverted);
+        m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_rightMotor.configure(m_config_normal, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_leftMotor.setVoltage(20.0);
         Timer.delay(0.2);
@@ -79,7 +64,7 @@ public class FuelSubsystem implements Subsystem {
     }
     
     public void autoShoot(){
-        m_leftMotor.getConfigurator().apply(m_talon_config_inverted);
+        m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_rightMotor.configure(m_config_normal, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_leftMotor.setVoltage(22.0);
         Timer.delay(0.2);
@@ -108,9 +93,9 @@ public class FuelSubsystem implements Subsystem {
     }
     
     public void lebron() {
-        m_leftMotor.setVoltage(8);
+        m_leftMotor.setVoltage(-8);
         m_rightMotor.setVoltage(12.6);
-        Timer.delay(0.1);
+        //Timer.delay(0.234);
         m_leftMotor.setVoltage(11);
         m_rightMotor.setVoltage(12.6);
     }
@@ -122,8 +107,8 @@ public class FuelSubsystem implements Subsystem {
 
     public void mid() {
         //this is for Being a mid-bot and taking fuel and immediately shooting to your side 
-        m_leftMotor.getConfigurator().apply(m_talon_config_inverted);
-        m_leftMotor.setVoltage(18);
+        m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        m_leftMotor.setVoltage(20);
         m_rightMotor.setVoltage(8);
     }
     
@@ -165,5 +150,22 @@ public class FuelSubsystem implements Subsystem {
 
     public Command supportBotMacro() {
         return this.run(() -> mid());
+    }
+
+    public Command fireProjectileAutonomousCommand(double range, double heightTarget){
+        double gravity = 9.81;
+        double wheelCircumfrence = 0.11999999;
+        double heightLeBron = 0.4953;
+        double thota = 80; // this is in degrees to be converted to radians later
+        range +=  0.4318; //this accounts for the distance from the robots projectile storage to the fron to f the robot
+        double cosSquared = Math.cos(Math.toRadians(thota))*Math.cos(Math.toRadians(thota));
+        double constantThing = (25*60/26*Math.PI*wheelCircumfrence) * (Math.sqrt(gravity/2*cosSquared));
+        double targetRpm = constantThing*(range/
+        (Math.sqrt(range*
+        Math.tan(Math.toRadians(thota))
+        -(heightTarget - heightLeBron))))*1.4; // the 1.4 is because i assume its a closed system so to account for losses
+        return run(() -> {
+            m_leftPID.setSetpoint(targetRpm, ControlType.kVelocity);
+        });
     }
 }
