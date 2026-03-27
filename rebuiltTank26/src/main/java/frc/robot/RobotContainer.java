@@ -127,13 +127,13 @@ public class RobotContainer {
       Commands.run(
             () -> {
                 double forward = -stick.getRawAxis(ControllerConstantsLetters.leftJoystickYAxis)*0.7;
-                double turn    = stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis)*0.5;
+                double turn    = -stick.getRawAxis(ControllerConstantsLetters.rightJoystickXAxis)*0.3;
 
                 // If Xbox Controller is being used, override
                 if (Math.abs(xboxController.getRawAxis(XBOXControllerConstantsLetters.leftJoystickYAxis)) > 0.1 ||
                     Math.abs(xboxController.getRawAxis(XBOXControllerConstantsLetters.rightJoystickXAxis)) > 0.1) {
                     forward = -xboxController.getRawAxis(XBOXControllerConstantsLetters.leftJoystickYAxis);
-                    turn    = xboxController.getRawAxis(XBOXControllerConstantsLetters.rightJoystickXAxis);
+                    turn    = -xboxController.getRawAxis(XBOXControllerConstantsLetters.rightJoystickXAxis);
                 }
 
                 m_driveSubsystem.driveArcade(forward, turn);
