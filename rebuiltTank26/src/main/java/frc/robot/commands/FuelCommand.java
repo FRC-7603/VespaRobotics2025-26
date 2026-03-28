@@ -11,6 +11,7 @@ public class FuelCommand extends Command {
     private IntSupplier m_mode;
     private DoubleSupplier m_time;
     private final FuelSubsystem m_fuel;
+    private double m_startTime;
 
     public FuelCommand(FuelSubsystem subsystem, IntSupplier mode, DoubleSupplier time) {
         m_fuel = subsystem;
@@ -21,34 +22,41 @@ public class FuelCommand extends Command {
 
     @Override
     public void initialize() {
+        m_startTime = Timer.getFPGATimestamp();
     }
 
     @Override
     public void execute() {
       switch (m_mode.getAsInt()) {
-        case 0:
-          System.out.println("Auto shoot running");
-          m_fuel.autoShoot();
+        case 0: // Auto shoot – RPM-gated
+          m_fuel.spoolShooter();
+          if (m_fuel.isShooterAtSpeed()) {
+              m_fuel.runFeeder();
+          } else {
+              m_fuel.stopFeeder();
+          }
           break;
         case 1:
-          System.out.println("Ground intake");
           m_fuel.groundIntake();
           break;
         case 2:
-          System.out.println("Ground outtake");
           m_fuel.groundOuttake();
           break;
-        case 3:
-          System.out.println("Shoot");
-          m_fuel.shoot();
+        case 3: // Manual shoot – RPM-gated
+          m_fuel.spoolShooter();
+          if (m_fuel.isShooterAtSpeed()) {
+              m_fuel.runFeeder();
+          } else {
+              m_fuel.stopFeeder();
+          }
           break;
       }
     }
 
     @Override
     public boolean isFinished() {
-        Timer.delay(m_time.getAsDouble());
-        return true;
+        // Non-blocking timeout instead of Timer.delay()
+        return (Timer.getFPGATimestamp() - m_startTime) >= m_time.getAsDouble();
     }
 
     @Override
