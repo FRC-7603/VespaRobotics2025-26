@@ -110,7 +110,7 @@ public class FuelSubsystem implements Subsystem {
         //this is for Being a mid-bot and taking fuel and immediately shooting to your side 
         m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_leftMotor.setVoltage(20);
-        m_rightMotor.setVoltage(8);
+        m_rightMotor.setVoltage(8); //8 -> 6
     }
     
     // commands

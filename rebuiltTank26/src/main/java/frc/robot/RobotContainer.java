@@ -226,6 +226,39 @@ public class RobotContainer {
       );
   }
 
+  public Command simpleLEFTAuto() {
+    return Commands.sequence(
+
+        // Step back
+        new DriveCommand(m_driveSubsystem, () -> 0, () -> 1.2)
+            .withTimeout(1.5),
+
+        // Stop after moving
+        Commands.runOnce(() -> m_driveSubsystem.stop()),
+
+        // Shoot
+        new FuelCommand(m_fuel, () -> 0, () -> 5)
+            .withTimeout(2),
+
+        Commands.runOnce(() -> m_fuel.stopCommand()),
+
+        // Turn ~ -30 degrees
+        Commands.run(
+            () -> m_driveSubsystem.driveArcade(0, -0.4),
+            m_driveSubsystem
+        ).withTimeout(0.5),
+
+        Commands.runOnce(() -> m_driveSubsystem.stop()),
+
+        // Drive to AprilTag
+        m_visionSubsystem
+            .driveToTagTWOLEBRON(m_driveSubsystem, 1.5)
+            .withTimeout(2.5),
+
+        Commands.runOnce(() -> m_driveSubsystem.stop())
+    );
+  }
+
   public Command simpleRIGHTAuto() {
     return Commands.sequence(
 
@@ -257,5 +290,5 @@ public class RobotContainer {
 
         Commands.runOnce(() -> m_driveSubsystem.stop())
     );
-}
+  }
 }
