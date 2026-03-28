@@ -11,7 +11,8 @@ public final class Constants {
     public static final int LEFT_LEADER_ID = 1;
     public static final int LEFT_FOLLOWER_ID = 3;
     public static final int RIGHT_LEADER_ID = 2;
-    public static final int RIGHT_FOLLOWER_ID = 4;
+    public static final int RIGHT_FOLLOWER_ID = 4; // DIHS IS FOUR BY TWICE?????
+    
 
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60; //max 30
 
@@ -46,7 +47,7 @@ public final class Constants {
     // Target RPM the shooter wheel must reach before the feeder fires.
     // Since the bar/rollers are on the same shaft as the shooter motor,
     // the wheel MUST be at full speed before the feeder pushes the ball
-    // into the bar — otherwise the ball hits the rails with too little
+    // into the bar otherwise the ball hits the rails with too little
     // wheel energy and jams.
     public static final double SHOOTER_TARGET_RPM = 4500.0;
 
@@ -61,7 +62,7 @@ public final class Constants {
     // Voltage applied to the feeder (right) motor to push the ball
     // out of storage and into the bar/rollers.
     // Keep this moderate so the ball is eased into the spinning
-    // bar rather than slammed — reduces rail compression jams.
+    // bar rather than slammed reduces rail compression jams.
     public static final double FEEDER_FIRE_VOLTAGE = 12.0;
   }
 
