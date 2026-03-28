@@ -34,8 +34,7 @@ public class DriveSubsystem extends SubsystemBase {
   private final DifferentialDrive drive;
 
   private final Alert m_motorTempNotFound = new Alert("Unable to read motor temperature! Using CIMs?", AlertType.kWarning);
-  private final Alert m_overheatAlert = new Alert("Motor is overheating!", AlertType.kWarning);
-
+  private final Alert m_overheatAlert = new Alert("Drivetrain motors are overheating!", AlertType.kWarning);
 
   // constructor
   public DriveSubsystem() {

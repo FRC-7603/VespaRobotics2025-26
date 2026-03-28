@@ -16,6 +16,9 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Alert.AlertType;
+
 import static frc.robot.Constants.FuelConstants;
 
 public class FuelSubsystem implements Subsystem {
@@ -31,6 +34,7 @@ public class FuelSubsystem implements Subsystem {
     private final SparkMaxConfig m_config_inverted = new SparkMaxConfig();
     private final RelativeEncoder m_leftEncoder;
     private final SparkClosedLoopController m_leftPID;
+    private final Alert m_overheatAlert = new Alert("Fuel motors are overheating!", AlertType.kWarning);
 
     // constructor
     public FuelSubsystem(){
@@ -89,8 +93,12 @@ public class FuelSubsystem implements Subsystem {
         m_rightMotor.set(0);
     }
 
-    protected void isFinished() {
-        Stop();
+    @Override
+    public void periodic() {
+        m_overheatAlert.set(
+            m_leftMotor.getMotorTemperature() > FuelConstants.FUEL_MOTOR_OVERHEAT_TEMPERATURE ||
+            m_rightMotor.getMotorTemperature() > FuelConstants.FUEL_MOTOR_OVERHEAT_TEMPERATURE
+        );
     }
     
     public void lebron() {

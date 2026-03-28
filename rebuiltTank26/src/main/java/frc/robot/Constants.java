@@ -15,7 +15,7 @@ public final class Constants {
 
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60; //max 30
 
-    public static final int DRIVE_MOTOR_OVERHEAT_TEMPERATURE = 50; //degrees Celsius
+    public static final int DRIVE_MOTOR_OVERHEAT_TEMPERATURE = 70; //degrees Celsius
   }
 
   public static final class FuelConstants {
@@ -28,6 +28,8 @@ public final class Constants {
     //Note: the motors are on gear so be carfull of invering it 
 
     public static final int FUEL_MOTOR_CURRENT_LIMIT = 60;
+
+    public static final int FUEL_MOTOR_OVERHEAT_TEMPERATURE = 70;
 
     // Voltage values for various fuel operations. These values may need to be tuned
     // based on exact robot construction.

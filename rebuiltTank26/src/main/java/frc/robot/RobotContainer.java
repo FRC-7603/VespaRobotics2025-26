@@ -37,7 +37,7 @@ public class RobotContainer {
   // public final Climber m_climber = new Climber();
   public final FuelSubsystem m_fuel = new FuelSubsystem();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-  public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+  // public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
 
   // The operator's controller
   // private final Joystick operatorController = new Joystick(OPERATOR_CONTROLLER_PORT);
@@ -55,7 +55,7 @@ public class RobotContainer {
   private void configureBindingsXBOX() {
 
     JoystickButton aButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.A);
-    JoystickButton yButton = new JoystickButton(xboxController, ControllerConstantsLetters.Y);
+    //JoystickButton yButton = new JoystickButton(xboxController, ControllerConstantsLetters.Y);
     JoystickButton bButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.B);
     JoystickButton xButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.X);
     JoystickButton lbButton = new JoystickButton(xboxController, XBOXControllerConstantsLetters.LB);
@@ -82,11 +82,11 @@ public class RobotContainer {
     //yButton.onFalse(Command.runOnce(() -> m_driveSubsystem.stop()));
 
     //yButton.onTrue(m_visionSubsystem.driveToTagTWOLEBRON(m_driveSubsystem, 1.5));
-    yButton.onTrue(
-    m_visionSubsystem
-        .driveToTagTWOLEBRON(m_driveSubsystem, 1.5)
-        .andThen(() -> m_driveSubsystem.stop())
-    );
+    // yButton.onTrue(
+    // m_visionSubsystem
+    //     .driveToTagTWOLEBRON(m_driveSubsystem, 1.5)
+    //     .andThen(() -> m_driveSubsystem.stop())
+    // );
     //yButton.onFalse(m_driveSubsystem.stop());
 
     // rightTrigger.onTrue(m_fuel.fireProjectileAutonomousCommand(m_visionSubsystem.getDistance(), 72));
@@ -248,14 +248,14 @@ public class RobotContainer {
             m_driveSubsystem
         ).withTimeout(0.5),
 
-        Commands.runOnce(() -> m_driveSubsystem.stop()),
-
-        // Drive to AprilTag
-        m_visionSubsystem
-            .driveToTagTWOLEBRON(m_driveSubsystem, 1.5)
-            .withTimeout(2.5),
-
         Commands.runOnce(() -> m_driveSubsystem.stop())
+
+        // // Drive to AprilTag
+        // m_visionSubsystem
+        //     .driveToTagTWOLEBRON(m_driveSubsystem, 1.5)
+        //     .withTimeout(2.5),
+
+        // Commands.runOnce(() -> m_driveSubsystem.stop())
     );
   }
 
@@ -264,7 +264,7 @@ public class RobotContainer {
 
         // Step back
         new DriveCommand(m_driveSubsystem, () -> 0, () -> 1.2)
-            .withTimeout(1.5),
+            .withTimeout(1.7),
 
         // Stop after moving
         Commands.runOnce(() -> m_driveSubsystem.stop()),
@@ -279,16 +279,16 @@ public class RobotContainer {
         Commands.run(
             () -> m_driveSubsystem.driveArcade(0, 0.4),
             m_driveSubsystem
-        ).withTimeout(0.5),
-
-        Commands.runOnce(() -> m_driveSubsystem.stop()),
-
-        // Drive to AprilTag
-        m_visionSubsystem
-            .driveToTagTWOLEBRON(m_driveSubsystem, 1.5)
-            .withTimeout(2.5),
+        ).withTimeout(0.45),
 
         Commands.runOnce(() -> m_driveSubsystem.stop())
+
+        // // Drive to AprilTag
+        // m_visionSubsystem
+        //     .driveToTagTWOLEBRON(m_driveSubsystem, 1.5)
+        //     .withTimeout(2.5),
+
+        // Commands.runOnce(() -> m_driveSubsystem.stop())
     );
   }
 }
