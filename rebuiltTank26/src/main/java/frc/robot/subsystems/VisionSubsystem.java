@@ -212,9 +212,7 @@ public class VisionSubsystem extends SubsystemBase {
         .finallyDo(interrupted -> drive.stop());
     }
 
-    public void autoSTOPCommand(DriveSubsystem drive) {
-        
-        drive.stop();
-        return; 
+    public Command autoSTOPCommand(DriveSubsystem drive) {
+        return runOnce(() -> drive.stop());
     }
 }
