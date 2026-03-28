@@ -45,7 +45,8 @@ public class FuelSubsystem implements Subsystem {
     }
 
 
-    //Telemetry – update shooter state every loop
+    //Telemetry - update shooter state every loop
+    // THIS IS PERIODIC BY TWICE????? 
     @Override
     public void periodic() {
         double rpm = getShooterRPM();
@@ -56,11 +57,13 @@ public class FuelSubsystem implements Subsystem {
 
 
     //return the current shooter (left motor) velocity in RPM.
+    // THIS IS RPM BY TWICE?????
     public double getShooterRPM() {
         return Math.abs(m_leftEncoder.getVelocity());
     }
 
-    //return true when the shooter wheel is within the tolerance band of the target RPM and is therefore safe to feed a ball.
+    // return true when the shooter wheel is within the tolerance band of the target RPM and is therefore safe to feed a ball.
+    // THIS IS SHOOTER READY BY TWICE?????
     public boolean isShooterAtSpeed() {
         double tolerance = FuelConstants.SHOOTER_TARGET_RPM
                 * (FuelConstants.SHOOTER_RPM_TOLERANCE_PERCENT / 100.0);
@@ -80,7 +83,7 @@ public class FuelSubsystem implements Subsystem {
     /*
     Push the ball out of storage and into the bar/rollers.
     Uses a moderate voltage so the ball is eased into the spinning
-    bar rather than slammed — this reduces the compression force
+    bar rather than slammed this reduces the compression force
     against the rails and prevents jams.
     */
     public void runFeeder() {
