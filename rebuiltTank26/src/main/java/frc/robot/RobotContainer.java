@@ -182,7 +182,7 @@ public class RobotContainer {
           new FuelCommand(m_fuel, () -> 0).withTimeout(5.5),
 
           // Step 3: step back
-          new DriveCommand(m_driveSubsystem, () -> 0).withTimeout(1)
+          new DriveCommand(m_driveSubsystem, () -> 0).withTimeout(1.5)
           
 
           // // Step 2: shoot
@@ -291,23 +291,37 @@ public class RobotContainer {
 
   public Command simpleNeutralZoneAuto() {
     return Commands.sequence(
+        // Step 1: step backward
+        new DriveCommand(m_driveSubsystem, () -> 0).withTimeout(0.5),
 
-        // Go forward
+        // Step 2: preheat
+        new FuelCommand(m_fuel, () -> 4).withTimeout(1.5),
+
+        // Step 2: shoot
+        new FuelCommand(m_fuel, () -> 0).withTimeout(5.5),
+
+        // Step 3: step back
+        new DriveCommand(m_driveSubsystem, () -> 0).withTimeout(3),
+
+        // Step 4: turn 30 degrees
+        new DriveCommand(m_driveSubsystem, () -> 4).withTimeout(2),
+
+        // Step 5: Go forward
         new DriveCommand(m_driveSubsystem, () -> 0)
-            .withTimeout(3),
+            .withTimeout(5)
 
-        // Stop after moving
-        Commands.runOnce(() -> m_driveSubsystem.stop()),
+        // // Stop after moving
+        // Commands.runOnce(() -> m_driveSubsystem.stop()),
 
-        // Turn left
-        new DriveCommand(m_driveSubsystem, () -> 3)
-            .withTimeout(0.8),
+        // // Turn left
+        // new DriveCommand(m_driveSubsystem, () -> 3)
+        //     .withTimeout(0.8),
 
-        // 
-        new DriveCommand(m_driveSubsystem, () -> 0)
-            .withTimeout(3),
+        // // 
+        // new DriveCommand(m_driveSubsystem, () -> 0)
+        //     .withTimeout(3),
 
-        Commands.runOnce(() -> m_driveSubsystem.stop())
+        // Commands.runOnce(() -> m_driveSubsystem.stop())
 
         // // Drive to AprilTag
         // m_visionSubsystem
