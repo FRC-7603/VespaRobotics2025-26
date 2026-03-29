@@ -172,19 +172,17 @@ public class RobotContainer {
     public Command simpleAuto() {
       return Commands.sequence(
 
-          // Step 1: step back 1.5 meters (approx)
-          new DriveCommand(m_driveSubsystem, () -> 0, () -> 1.2),
+          // Step 1: step backward
+          new DriveCommand(m_driveSubsystem, () -> 0).withTimeout(0.5),
+
+          // Step 2: preheat
+          new FuelCommand(m_fuel, () -> 4).withTimeout(1.5),
 
           // Step 2: shoot
-          Commands.runOnce(() -> SmartDashboard.putBoolean("Shooting", true)),
+          new FuelCommand(m_fuel, () -> 0).withTimeout(7),
 
-          new FuelCommand(m_fuel, () -> 0, () -> 5),
-
-          Commands.runOnce(() -> SmartDashboard.putBoolean("Shooting", false)),
-          
-
-          // Step 3: step forward
-          new DriveCommand(m_driveSubsystem, () -> 1, () -> 1.2)
+          // Step 3: step back
+          new DriveCommand(m_driveSubsystem, () -> 1).withTimeout(0.5)
           
 
           // // Step 2: shoot
@@ -230,23 +228,20 @@ public class RobotContainer {
     return Commands.sequence(
 
         // Step back
-        new DriveCommand(m_driveSubsystem, () -> 0, () -> 1.2)
-            .withTimeout(1.5),
+        new DriveCommand(m_driveSubsystem, () -> 0)
+            .withTimeout(0.5),
 
         // Stop after moving
         Commands.runOnce(() -> m_driveSubsystem.stop()),
 
         // Shoot
-        new FuelCommand(m_fuel, () -> 0, () -> 5)
-            .withTimeout(2),
+        new FuelCommand(m_fuel, () -> 0)
+            .withTimeout(5),
 
         Commands.runOnce(() -> m_fuel.stopCommand()),
 
-        // Turn ~ -30 degrees
-        Commands.run(
-            () -> m_driveSubsystem.driveArcade(0, -0.4),
-            m_driveSubsystem
-        ).withTimeout(0.5),
+        new DriveCommand(m_driveSubsystem, () -> 3)
+            .withTimeout(0.3),
 
         Commands.runOnce(() -> m_driveSubsystem.stop())
 
@@ -262,24 +257,55 @@ public class RobotContainer {
   public Command simpleRIGHTAuto() {
     return Commands.sequence(
 
-        // Step back
-        new DriveCommand(m_driveSubsystem, () -> 0, () -> 1.2)
-            .withTimeout(1.7),
+        // Go backward
+        new DriveCommand(m_driveSubsystem, () -> 0)
+            .withTimeout(0.5),
 
-        // Stop after moving
         Commands.runOnce(() -> m_driveSubsystem.stop()),
 
         // Shoot
-        new FuelCommand(m_fuel, () -> 0, () -> 5)
-            .withTimeout(2),
+        new FuelCommand(m_fuel, () -> 0)
+            .withTimeout(5),
 
         Commands.runOnce(() -> m_fuel.stopCommand()),
 
         // Turn ~30 degrees
-        Commands.run(
-            () -> m_driveSubsystem.driveArcade(0, 0.4),
-            m_driveSubsystem
-        ).withTimeout(0.45),
+        new DriveCommand(m_driveSubsystem, () -> 4)
+            .withTimeout(0.2),
+
+        Commands.runOnce(() -> m_driveSubsystem.stop()),
+
+
+        new DriveCommand(m_driveSubsystem, () -> 0)
+            .withTimeout(0.5),
+
+        Commands.runOnce(() -> m_driveSubsystem.stop())
+        // // Drive to AprilTag
+        // m_visionSubsystem
+        //     .driveToTagTWOLEBRON(m_driveSubsystem, 1.5)
+        //     .withTimeout(2.5),
+
+        // Commands.runOnce(() -> m_driveSubsystem.stop())
+    );
+  }
+
+  public Command simpleNeutralZoneAuto() {
+    return Commands.sequence(
+
+        // Go forward
+        new DriveCommand(m_driveSubsystem, () -> 0)
+            .withTimeout(3),
+
+        // Stop after moving
+        Commands.runOnce(() -> m_driveSubsystem.stop()),
+
+        // Turn left
+        new DriveCommand(m_driveSubsystem, () -> 3)
+            .withTimeout(0.8),
+
+        // 
+        new DriveCommand(m_driveSubsystem, () -> 0)
+            .withTimeout(3),
 
         Commands.runOnce(() -> m_driveSubsystem.stop())
 

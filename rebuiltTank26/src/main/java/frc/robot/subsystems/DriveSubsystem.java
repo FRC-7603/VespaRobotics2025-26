@@ -13,6 +13,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,10 +22,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.DriveConstants.*;
 
 public class DriveSubsystem extends SubsystemBase {
-  private final SparkMax leftLeader;
-  private final SparkMax leftFollower;
-  private final SparkMax rightLeader;
-  private final SparkMax rightFollower;
+  private final SparkMax leftLeader = new SparkMax(LEFT_LEADER_ID, MotorType.kBrushless);
+  private final SparkMax leftFollower = new SparkMax(LEFT_FOLLOWER_ID, MotorType.kBrushless);
+  private final SparkMax rightLeader = new SparkMax(RIGHT_LEADER_ID, MotorType.kBrushless);
+  private final SparkMax rightFollower = new SparkMax(RIGHT_FOLLOWER_ID, MotorType.kBrushless);
 
   private final SparkMaxConfig leftLeaderConfig;
   private final SparkMaxConfig leftFollowerConfig;
@@ -34,16 +35,10 @@ public class DriveSubsystem extends SubsystemBase {
   private final DifferentialDrive drive;
 
   private final Alert m_motorTempNotFound = new Alert("Unable to read motor temperature! Using CIMs?", AlertType.kWarning);
-  private final Alert m_overheatAlert = new Alert("Drivetrain motors are overheating!", AlertType.kWarning);
+  private final Alert m_overheatAlert = new Alert("Drivetrain motors are overheating: "+leftLeader.getMotorTemperature()+" degrees", AlertType.kWarning);
 
   // constructor
   public DriveSubsystem() {
-
-    // create brushless motors for drive
-    leftLeader = new SparkMax(LEFT_LEADER_ID, MotorType.kBrushless);
-    leftFollower = new SparkMax(LEFT_FOLLOWER_ID, MotorType.kBrushless);
-    rightLeader = new SparkMax(RIGHT_LEADER_ID, MotorType.kBrushless);
-    rightFollower = new SparkMax(RIGHT_FOLLOWER_ID, MotorType.kBrushless);
 
     SparkMaxConfig config = new SparkMaxConfig();
 
@@ -116,6 +111,7 @@ public class DriveSubsystem extends SubsystemBase {
   // methods
   public void driveArcade(double xSpeed, double zRotation) {
     drive.arcadeDrive(xSpeed, zRotation);
+    drive.feed();
     SmartDashboard.putNumber("Arcade speed", xSpeed);
   }
 

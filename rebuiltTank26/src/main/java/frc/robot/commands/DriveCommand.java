@@ -1,22 +1,18 @@
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveCommand extends Command {
 
     private IntSupplier m_direction;
-    private DoubleSupplier m_time;
     private final DriveSubsystem m_drive;
 
-    public DriveCommand(DriveSubsystem subsystem, IntSupplier direction, DoubleSupplier time) {
+    public DriveCommand(DriveSubsystem subsystem, IntSupplier direction) {
       m_drive = subsystem;
       m_direction = direction;
-      m_time = time;
       addRequirements(m_drive);
     }
 
@@ -28,24 +24,27 @@ public class DriveCommand extends Command {
     public void execute() {
       switch (m_direction.getAsInt()) {
         case 0:
-          System.out.println("Forward");
+          System.out.println("Backward");
           m_drive.driveArcade(0.5, 0);
           break;
         case 1:
-          System.out.println("Backward");
+          System.out.println("Forward");
           m_drive.driveArcade(-0.5, 0);
           break;
         case 2:
           System.out.println("Stop");
           m_drive.driveArcade(0, 0);
           break;
+        case 3:
+          System.out.println("Rotate left");
+          m_drive.driveArcade(0, 0.5);
+          break;
+        case 4:
+          System.out.println("Rotate right");
+          m_drive.driveArcade(0, -0.5);
+          break;
+        
       }
-    }
-
-    @Override
-    public boolean isFinished() {
-        Timer.delay(m_time.getAsDouble());
-        return true;
     }
 
     @Override

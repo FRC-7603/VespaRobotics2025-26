@@ -22,9 +22,12 @@ public class Robot extends TimedRobot {
 
   private Command m_autonomousCommand;
   private static final String kDefaultAuto = "Default";
-  private static final String kBackupAuto = "Backup Auto";
-  private static final String kNoAuto = "No Auto";
+  private static final String kBackupAuto = "Simple Auto";
   private static final String kRightAutoTrench = "Right Trench";  
+  private static final String kNeutralZoneAuto = "Neutral Zone";
+  private static final String kNoAuto = "No Auto";
+
+
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -34,8 +37,10 @@ public class Robot extends TimedRobot {
     // Autonomous Chooser
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("Backup Auto", kBackupAuto);
-    m_chooser.addOption("No Auto", kNoAuto);
     m_chooser.addOption("Right Trench Auto", kRightAutoTrench);
+    m_chooser.addOption("Neutral Zone", kNeutralZoneAuto);
+    m_chooser.addOption("No Auto", kNoAuto);
+
     SmartDashboard.putData(m_chooser);
 
     // Alliance Color
@@ -94,11 +99,12 @@ public class Robot extends TimedRobot {
       case kDefaultAuto:
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         break;
-
+      case kNeutralZoneAuto:
+        m_autonomousCommand = m_robotContainer.simpleNeutralZoneAuto();
+        break;
       case kRightAutoTrench:
         m_autonomousCommand = m_robotContainer.simpleRIGHTAuto();
         break;
-
       case kNoAuto:
         break;
       default:

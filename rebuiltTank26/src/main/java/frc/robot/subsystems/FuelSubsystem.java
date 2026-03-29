@@ -63,16 +63,20 @@ public class FuelSubsystem implements Subsystem {
     public void shoot(){
         m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_rightMotor.configure(m_config_normal, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-        m_leftMotor.setVoltage(20.0);
-        Timer.delay(0.2);
+        m_leftMotor.setVoltage(20);
         m_rightMotor.setVoltage(22.0);
     }
     
+    public void preheat(){
+        m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        m_leftMotor.setVoltage(12);
+
+    }
+
     public void autoShoot(){
         m_leftMotor.configure(m_config_inverted, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_rightMotor.configure(m_config_normal, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-        m_leftMotor.setVoltage(22.0);
-        Timer.delay(0.2);
+        m_leftMotor.setVoltage(12);
         m_rightMotor.setVoltage(22.0);
     }
 

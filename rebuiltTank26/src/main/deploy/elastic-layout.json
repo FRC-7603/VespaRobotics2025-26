@@ -27,8 +27,8 @@
           },
           {
             "title": "Alliance Color",
-            "x": 128.0,
-            "y": 0.0,
+            "x": 0.0,
+            "y": 384.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Single Color View",
@@ -40,14 +40,15 @@
           },
           {
             "title": "Autonomous Chooser",
-            "x": 256.0,
-            "y": 0.0,
-            "width": 384.0,
+            "x": 128.0,
+            "y": 384.0,
+            "width": 256.0,
             "height": 128.0,
-            "type": "Split Button Chooser",
+            "type": "ComboBox Chooser",
             "properties": {
               "topic": "/SmartDashboard/SendableChooser[0]",
-              "period": 0.06
+              "period": 0.06,
+              "sort_options": false
             }
           },
           {
@@ -80,10 +81,10 @@
           },
           {
             "title": "Speed",
-            "x": 128.0,
-            "y": 128.0,
+            "x": 384.0,
+            "y": 0.0,
             "width": 256.0,
-            "height": 384.0,
+            "height": 256.0,
             "type": "Radial Gauge",
             "properties": {
               "topic": "/SmartDashboard/Speed",
@@ -102,9 +103,9 @@
           {
             "title": "Turn",
             "x": 384.0,
-            "y": 128.0,
+            "y": 256.0,
             "width": 256.0,
-            "height": 384.0,
+            "height": 256.0,
             "type": "Radial Gauge",
             "properties": {
               "topic": "/SmartDashboard/Turn",
@@ -121,16 +122,48 @@
             }
           },
           {
-            "title": "Camera",
+            "title": "Alerts",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 384.0,
+            "height": 384.0,
+            "type": "Alerts",
+            "properties": {
+              "topic": "/SmartDashboard/Alerts",
+              "period": 0.06
+            }
+          },
+          {
+            "title": "Arcade speed",
+            "x": 1024.0,
+            "y": 256.0,
+            "width": 384.0,
+            "height": 256.0,
+            "type": "Radial Gauge",
+            "properties": {
+              "topic": "/SmartDashboard/Arcade speed",
+              "period": 0.06,
+              "data_type": "double",
+              "start_angle": -140.0,
+              "end_angle": 140.0,
+              "min_value": -1.0,
+              "max_value": 1.0,
+              "number_of_labels": 8,
+              "wrap_value": false,
+              "show_pointer": true,
+              "show_ticks": true
+            }
+          },
+          {
+            "title": "Differential Drive",
             "x": 1024.0,
             "y": 0.0,
-            "width": 512.0,
-            "height": 512.0,
-            "type": "Camera Stream",
+            "width": 384.0,
+            "height": 256.0,
+            "type": "DifferentialDrive",
             "properties": {
-              "topic": "/CameraPublisher/photonvision_Port_1183_Input_MJPEG_Server",
-              "period": 0.06,
-              "rotation_turns": 0
+              "topic": "/SmartDashboard/Differential Drive",
+              "period": 0.06
             }
           }
         ]

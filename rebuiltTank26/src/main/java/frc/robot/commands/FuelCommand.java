@@ -1,21 +1,17 @@
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.subsystems.FuelSubsystem;
 
 public class FuelCommand extends Command {
     private IntSupplier m_mode;
-    private DoubleSupplier m_time;
     private final FuelSubsystem m_fuel;
 
-    public FuelCommand(FuelSubsystem subsystem, IntSupplier mode, DoubleSupplier time) {
+    public FuelCommand(FuelSubsystem subsystem, IntSupplier mode) {
         m_fuel = subsystem;
         m_mode = mode;
-        m_time = time;
         addRequirements(m_fuel);
     }
 
@@ -42,13 +38,11 @@ public class FuelCommand extends Command {
           System.out.println("Shoot");
           m_fuel.shoot();
           break;
+        case 4:
+          System.out.println("Preheat");
+          m_fuel.preheat();
+          break;
       }
-    }
-
-    @Override
-    public boolean isFinished() {
-        Timer.delay(m_time.getAsDouble());
-        return true;
     }
 
     @Override
