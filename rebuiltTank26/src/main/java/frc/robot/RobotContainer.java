@@ -179,10 +179,10 @@ public class RobotContainer {
           new FuelCommand(m_fuel, () -> 4).withTimeout(1.5),
 
           // Step 2: shoot
-          new FuelCommand(m_fuel, () -> 0).withTimeout(7),
+          new FuelCommand(m_fuel, () -> 0).withTimeout(5.5),
 
           // Step 3: step back
-          new DriveCommand(m_driveSubsystem, () -> 1).withTimeout(0.5)
+          new DriveCommand(m_driveSubsystem, () -> 0).withTimeout(1)
           
 
           // // Step 2: shoot
